@@ -38,4 +38,10 @@ test.describe("Login and recovery", async () => {
       page.getByRole("heading", { name: "My account" })
     ).toBeVisible();
   });
+
+  test("Login forms are rendered", async () => {
+    await expect(loginAndRecovery.emailInput).toBeVisible();
+    await expect(loginAndRecovery.passwordInput).toBeVisible();
+    await expect(loginAndRecovery.loginButton).toBeVisible();
+  });
 });
