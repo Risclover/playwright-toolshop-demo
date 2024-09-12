@@ -55,4 +55,15 @@ test.describe("Login and recovery", async () => {
       "Password is required"
     );
   });
+
+  test("Entering a password with less than 3 characters results in error", async ({
+    page,
+  }) => {
+    await loginAndRecovery.enterPassword("aa");
+    await loginAndRecovery.clickLoginButton();
+
+    await expect(
+      page.locator(loginAndRecovery.passwordErrorSelector)
+    ).toHaveText("PAssword length is invalid");
+  });
 });
