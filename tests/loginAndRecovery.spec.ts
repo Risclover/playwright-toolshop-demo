@@ -64,6 +64,6 @@ test.describe("Login and recovery", async () => {
 
     await expect(
       page.locator(loginAndRecovery.passwordErrorSelector)
-    ).toHaveText("PAssword length is invalid");
+    ).toHaveText("Password length is invalid");
   });
 });
