@@ -30,7 +30,7 @@ test.describe("Login and recovery", async () => {
 
     await expect(
       page.getByRole("button", {
-        name: `${userData.user2.firstName} + " " + ${userData.user2.lastName}`,
+        name: `${userData.user2.firstName} ${userData.user2.lastName}`,
       })
     ).toBeVisible();
 
