@@ -1,10 +1,15 @@
 import { Locator, Page } from "@playwright/test";
 
-interface UserData {
+interface User {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
+}
+
+interface UserData {
+  user1: User;
+  user2: User;
 }
 
 export class LoginAndRecovery {
