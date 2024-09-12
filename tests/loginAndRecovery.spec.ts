@@ -44,4 +44,15 @@ test.describe("Login and recovery", async () => {
     await expect(loginAndRecovery.passwordInput).toBeVisible();
     await expect(loginAndRecovery.loginButton).toBeVisible();
   });
+
+  test("Invalid login", async ({ page }) => {
+    await loginAndRecovery.clickLoginButton();
+    await expect(page.locator(loginAndRecovery.emailErrorSelector)).toHaveText(
+      "Email is required"
+    );
+
+    await expect(page.locator("[data-test='password-error']")).toHaveText(
+      "Password is required"
+    );
+  });
 });
