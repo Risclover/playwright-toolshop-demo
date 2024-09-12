@@ -13,17 +13,17 @@ interface UserData {
 }
 
 export class LoginAndRecovery {
-  private page: Page;
-  private userData: UserData;
-  private emailInput: Locator;
-  private passwordInput: Locator;
-  private loginButton: Locator;
-  private navMenu: Locator;
-  private loginURL: string;
-  private unmaskPasswordBtn: Locator;
-  private forgotPasswordURL: string;
-  private emailErrorSelector: string;
-  private passwordErrorSelector: string;
+  public page: Page;
+  public userData: UserData;
+  public emailInput: Locator;
+  public passwordInput: Locator;
+  public loginButton: Locator;
+  public navMenu: Locator;
+  public loginURL: string;
+  public unmaskPasswordBtn: Locator;
+  public forgotPasswordURL: string;
+  public emailErrorSelector: string;
+  public passwordErrorSelector: string;
 
   constructor(page: Page, userData: UserData) {
     this.page = page;
