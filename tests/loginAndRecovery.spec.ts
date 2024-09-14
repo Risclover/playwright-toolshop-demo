@@ -95,4 +95,14 @@ test.describe("Login and recovery", () => {
       page.locator(loginAndRecovery.emailErrorSelector)
     ).not.toBeVisible();
   });
+
+  test("Clicking the 'register your account' button brings the user to the registration page", async ({
+    page,
+  }) => {
+    await page.getByRole("link", { name: "Register your account" }).click();
+
+    await expect(page).toHaveURL(
+      "https://practicesoftwaretesting.com/auth/register"
+    );
+  });
 });
