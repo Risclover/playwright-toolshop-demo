@@ -83,4 +83,16 @@ test.describe("Login and recovery", () => {
       "Email format is invalid"
     );
   });
+
+  test("Entering a valid email format does not result in error", async ({
+    page,
+    loginAndRecovery,
+  }) => {
+    await loginAndRecovery.enterEmail("example@gmail.com");
+    await loginAndRecovery.clickLoginButton();
+
+    await expect(
+      page.locator(loginAndRecovery.emailErrorSelector)
+    ).not.toBeVisible();
+  });
 });
