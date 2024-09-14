@@ -124,4 +124,13 @@ test.describe("Login and recovery", () => {
 
     await expect(passwordInput).toHaveAttribute("type", "password");
   });
+
+  test("Clicking 'Forgot your password?' takes the user to the password reset page", async ({
+    page,
+    loginAndRecovery,
+  }) => {
+    await page.getByText("Forgot your Password?").click();
+
+    await expect(page).toHaveURL(loginAndRecovery.forgotPasswordURL);
+  });
 });
