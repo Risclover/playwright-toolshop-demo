@@ -60,4 +60,15 @@ test.describe("Login and recovery", () => {
       page.locator(loginAndRecovery.passwordErrorSelector)
     ).toHaveText("Password length is invalid");
   });
+
+  test("Entering a password with 3 characters or more doesn't result in an error", async ({
+    page,
+    loginAndRecovery,
+  }) => {
+    await loginAndRecovery.enterPassword("aaa");
+    await loginAndRecovery.clickLoginButton();
+    await expect(
+      page.locator(loginAndRecovery.passwordErrorSelector)
+    ).not.toBeVisible();
+  });
 });
