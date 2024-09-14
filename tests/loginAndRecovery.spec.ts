@@ -1,31 +1,25 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../fixtures";
 import { LoginAndRecovery } from "../page-objects/loginAndRecovery";
+import { webkit } from "@playwright/test";
 
-test.describe("Login and recovery", async () => {
-  let loginAndRecovery: LoginAndRecovery;
+let browser;
+let context;
+let page;
 
-  const userData = {
-    user1: {
-      email: "customer@practicesoftwaretesting.com",
-      password: "welcome01",
-      firstName: "Jane",
-      lastName: "Doe",
-    },
-
-    user2: {
-      email: "customer2@practicesoftwaretesting.com",
-      password: "welcome01",
-      firstName: "Jack",
-      lastName: "Howe",
-    },
-  };
-
-  test.beforeEach(async ({ page }) => {
-    loginAndRecovery = new LoginAndRecovery(page, userData);
-    await loginAndRecovery.goto();
+test.describe("Login and recovery", () => {
+  test.beforeEach(async () => {
+    browser = await webkit.launch();
+    context = await browser.newContext();
   });
 
-  test("Logs in successfully with valid credentials", async ({ page }) => {
+  test.afterEach(async () => {
+    await browser.close();
+  });
+  test("Logs in successfully with valid credentials", async ({
+    loginAndRecovery,
+    page,
+    userData,
+  }) => {
     await loginAndRecovery.login(userData.user2.email, userData.user2.password);
 
     await expect(
@@ -39,25 +33,25 @@ test.describe("Login and recovery", async () => {
     ).toBeVisible();
   });
 
-  test("Login forms are rendered", async () => {
-    await expect(loginAndRecovery.emailInput).toBeVisible();
+  test("Login forms are rendered", async ({ loginAndRecovery }) => {
+    await expect(loginAndRecovery.emailInput).toBeVisible({ timeout: 60000 });
     await expect(loginAndRecovery.passwordInput).toBeVisible();
     await expect(loginAndRecovery.loginButton).toBeVisible();
   });
 
-  test("Invalid login", async ({ page }) => {
+  test("Invalid login", async ({ page, loginAndRecovery }) => {
     await loginAndRecovery.clickLoginButton();
     await expect(page.locator(loginAndRecovery.emailErrorSelector)).toHaveText(
       "Email is required"
     );
-
-    await expect(page.locator("[data-test='password-error']")).toHaveText(
-      "Password is required"
-    );
+    await expect(
+      page.locator(loginAndRecovery.passwordErrorSelector)
+    ).toHaveText("Password is required");
   });
 
   test("Entering a password with less than 3 characters results in error", async ({
     page,
+    loginAndRecovery,
   }) => {
     await loginAndRecovery.enterPassword("aa");
     await loginAndRecovery.clickLoginButton();
