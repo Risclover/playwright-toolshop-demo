@@ -105,4 +105,23 @@ test.describe("Login and recovery", () => {
       "https://practicesoftwaretesting.com/auth/register"
     );
   });
+
+  test("Clicking the 'view password' button unmasks the password", async ({
+    page,
+    loginAndRecovery,
+  }) => {
+    const passwordInput = loginAndRecovery.passwordInput;
+    await passwordInput.fill("mysecretpassword");
+
+    await expect(passwordInput).toHaveAttribute("type", "password");
+
+    const viewPasswordButton = page.locator('button:has(svg[data-icon="eye"])');
+    await viewPasswordButton.click();
+
+    await expect(passwordInput).toHaveAttribute("type", "text");
+
+    await page.locator('button:has(svg[data-icon="eye-slash"])').click();
+
+    await expect(passwordInput).toHaveAttribute("type", "password");
+  });
 });
