@@ -133,4 +133,15 @@ test.describe("Login and recovery", () => {
 
     await expect(page).toHaveURL(loginAndRecovery.forgotPasswordURL);
   });
+
+  test("Entering an invalid email into the password reset form results in an error", async ({
+    page,
+    loginAndRecovery,
+  }) => {
+    await page.goto(loginAndRecovery.forgotPasswordURL);
+    await page.getByPlaceholder("Your email *").fill("hello@gmail.com");
+    await page.getByRole("button", { name: "Set New Password" }).click();
+
+    await expect(page.getByText("The selected email is invalid")).toBeVisible();
+  });
 });
