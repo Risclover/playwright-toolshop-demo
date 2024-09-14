@@ -71,4 +71,16 @@ test.describe("Login and recovery", () => {
       page.locator(loginAndRecovery.passwordErrorSelector)
     ).not.toBeVisible();
   });
+
+  test("Entering an invalid email format results in error", async ({
+    page,
+    loginAndRecovery,
+  }) => {
+    await loginAndRecovery.enterEmail("aaa");
+    await loginAndRecovery.clickLoginButton();
+
+    await expect(page.locator(loginAndRecovery.emailErrorSelector)).toHaveText(
+      "Email format is invalid"
+    );
+  });
 });
