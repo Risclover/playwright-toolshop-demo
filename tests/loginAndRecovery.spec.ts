@@ -144,4 +144,31 @@ test.describe("Login and recovery", () => {
 
     await expect(page.getByText("The selected email is invalid")).toBeVisible();
   });
+
+  test("Entering a valid email into the password reset form results in a success message", async ({
+    page,
+    loginAndRecovery,
+    userData,
+  }) => {
+    await page.goto(loginAndRecovery.forgotPasswordURL);
+
+    const [request] = await Promise.all([
+      page.waitForRequest(
+        "https://api.practicesoftwaretesting.com/users/forgot-password"
+      ),
+
+      page.getByPlaceholder("Your email *").fill(userData.user1.email),
+
+      page.click('input[type="submit"]'),
+    ]);
+
+    const response = await request.response();
+
+    if (response) {
+      const responseBody = await response.json();
+      expect(responseBody.success).toBe(true);
+    } else {
+      throw new Error("No response received for the forgot-password request");
+    }
+  });
 });
