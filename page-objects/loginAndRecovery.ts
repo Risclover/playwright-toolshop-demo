@@ -31,6 +31,8 @@ export class LoginAndRecovery {
   public setNewPasswordBtn: Locator;
   public forgotPasswordErrorSelector: string;
   public forgotPasswordBtn: Locator;
+  public registerBtn: Locator;
+  public registrationURL: string;
 
   constructor(page: Page, userData: UserData) {
     this.page = page;
@@ -57,6 +59,10 @@ export class LoginAndRecovery {
     });
     this.forgotPasswordErrorSelector = "The selected email is invalid";
     this.forgotPasswordBtn = page.getByText("Forgot your Password?");
+    this.registerBtn = page.getByRole("link", {
+      name: "Register your account",
+    });
+    this.registrationURL = "https://practicesoftwaretesting.com/auth/register";
   }
 
   async goto() {
@@ -86,11 +92,11 @@ export class LoginAndRecovery {
     await this.page.locator('[data-test="nav-sign-out"]').click();
   }
 
-  async clickUnmaskPassword() {
+  async clickUnmaskPasswordBtn() {
     await this.unmaskPasswordBtn.click();
   }
 
-  async clickMaskPassword() {
+  async clickMaskPasswordBtn() {
     await this.maskPasswordBtn.click();
   }
 
@@ -100,5 +106,9 @@ export class LoginAndRecovery {
 
   async clickForgotPasswordBtn() {
     await this.forgotPasswordBtn.click();
+  }
+
+  async clickRegisterBtn() {
+    await this.registerBtn.click();
   }
 }

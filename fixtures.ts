@@ -16,9 +16,15 @@ interface UserData {
   };
 }
 
+interface ExampleStrings {
+  exampleEmail: string;
+  examplePassword: string;
+}
+
 const test = baseTest.extend<{
   loginAndRecovery: LoginAndRecovery;
   userData: UserData;
+  exampleStrings: ExampleStrings;
 }>({
   userData: async ({}, use) => {
     const userData: UserData = {
@@ -41,6 +47,13 @@ const test = baseTest.extend<{
     const loginAndRecovery = new LoginAndRecovery(page, userData);
     await loginAndRecovery.goto();
     await use(loginAndRecovery);
+  },
+  exampleStrings: async ({}, use) => {
+    const exampleStrings: ExampleStrings = {
+      exampleEmail: "example@gmail.com",
+      examplePassword: "mysecretpassword",
+    };
+    await use(exampleStrings);
   },
 });
 
