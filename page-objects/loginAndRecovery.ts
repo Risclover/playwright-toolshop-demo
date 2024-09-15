@@ -21,9 +21,16 @@ export class LoginAndRecovery {
   public navMenu: Locator;
   public loginURL: string;
   public unmaskPasswordBtn: Locator;
+  public maskPasswordBtn: Locator;
   public forgotPasswordURL: string;
   public emailErrorSelector: string;
   public passwordErrorSelector: string;
+  public forgotPasswordAPI: string;
+  public forgotPasswordEmailInput: Locator;
+  public exampleEmail: string;
+  public setNewPasswordBtn: Locator;
+  public forgotPasswordErrorSelector: string;
+  public forgotPasswordBtn: Locator;
 
   constructor(page: Page, userData: UserData) {
     this.page = page;
@@ -33,22 +40,34 @@ export class LoginAndRecovery {
     this.loginButton = page.getByRole("button", { name: "Login" });
     this.navMenu = page.locator('[data-test="nav-menu"]');
     this.loginURL = "https://practicesoftwaretesting.com/auth/login";
-    this.unmaskPasswordBtn = page.locator('[data-test="login-form"] button');
+    this.unmaskPasswordBtn = page.locator('button:has(svg[data-icon="eye"])');
+    this.maskPasswordBtn = page.locator(
+      'button:has(svg[data-icon="eye-slash"])'
+    );
     this.forgotPasswordURL =
       "https://practicesoftwaretesting.com/auth/forgot-password";
     this.emailErrorSelector = "[data-test='email-error']";
     this.passwordErrorSelector = "[data-test='password-error']";
+    this.forgotPasswordAPI =
+      "https://api.practicesoftwaretesting.com/users/forgot-password";
+    this.forgotPasswordEmailInput = page.getByPlaceholder("Your email *");
+    this.exampleEmail = "example@gmail.com";
+    this.setNewPasswordBtn = page.getByRole("button", {
+      name: "Set New Password",
+    });
+    this.forgotPasswordErrorSelector = "The selected email is invalid";
+    this.forgotPasswordBtn = page.getByText("Forgot your Password?");
   }
 
   async goto() {
     await this.page.goto(this.loginURL);
   }
 
-  async enterEmail(email) {
+  async enterEmail(email: string) {
     await this.emailInput.fill(email);
   }
 
-  async enterPassword(password) {
+  async enterPassword(password: string) {
     await this.passwordInput.fill(password);
   }
 
@@ -56,7 +75,7 @@ export class LoginAndRecovery {
     await this.loginButton.click();
   }
 
-  async login(email, password) {
+  async login(email: string, password: string) {
     await this.enterEmail(email);
     await this.enterPassword(password);
     await this.clickLoginButton();
@@ -64,11 +83,22 @@ export class LoginAndRecovery {
 
   async logout() {
     await this.navMenu.click();
-
     await this.page.locator('[data-test="nav-sign-out"]').click();
   }
 
   async clickUnmaskPassword() {
     await this.unmaskPasswordBtn.click();
+  }
+
+  async clickMaskPassword() {
+    await this.maskPasswordBtn.click();
+  }
+
+  async waitForForgotPasswordRequest() {
+    await this.page.waitForRequest(this.forgotPasswordAPI);
+  }
+
+  async clickForgotPasswordBtn() {
+    await this.forgotPasswordBtn.click();
   }
 }
