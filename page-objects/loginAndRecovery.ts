@@ -15,6 +15,8 @@ interface UserData {
 export class LoginAndRecovery {
   public page: Page;
   public userData: UserData;
+  public currentUserMenuBtn: Locator;
+  public myAccountHeading: Locator;
   public emailInput: Locator;
   public passwordInput: Locator;
   public loginButton: Locator;
@@ -23,13 +25,13 @@ export class LoginAndRecovery {
   public unmaskPasswordBtn: Locator;
   public maskPasswordBtn: Locator;
   public forgotPasswordURL: string;
-  public emailErrorSelector: string;
-  public passwordErrorSelector: string;
+  public emailError: Locator;
+  public passwordError: Locator;
   public forgotPasswordAPI: string;
   public forgotPasswordEmailInput: Locator;
   public exampleEmail: string;
   public setNewPasswordBtn: Locator;
-  public forgotPasswordErrorSelector: string;
+  public forgotPasswordError: Locator;
   public forgotPasswordBtn: Locator;
   public registerBtn: Locator;
   public registrationURL: string;
@@ -37,6 +39,10 @@ export class LoginAndRecovery {
   constructor(page: Page, userData: UserData) {
     this.page = page;
     this.userData = userData;
+    this.currentUserMenuBtn = page.getByRole("button", {
+      name: `${userData.user2.firstName} ${userData.user2.lastName}`,
+    });
+    this.myAccountHeading = page.getByRole("heading", { name: "My account" });
     this.emailInput = page.getByPlaceholder("Your email");
     this.passwordInput = page.getByPlaceholder("Your password");
     this.loginButton = page.getByRole("button", { name: "Login" });
@@ -48,16 +54,15 @@ export class LoginAndRecovery {
     );
     this.forgotPasswordURL =
       "https://practicesoftwaretesting.com/auth/forgot-password";
-    this.emailErrorSelector = "[data-test='email-error']";
-    this.passwordErrorSelector = "[data-test='password-error']";
+    this.emailError = page.locator("[data-test='email-error']");
+    this.passwordError = page.locator("[data-test='password-error']");
     this.forgotPasswordAPI =
       "https://api.practicesoftwaretesting.com/users/forgot-password";
     this.forgotPasswordEmailInput = page.getByPlaceholder("Your email *");
-    this.exampleEmail = "example@gmail.com";
     this.setNewPasswordBtn = page.getByRole("button", {
       name: "Set New Password",
     });
-    this.forgotPasswordErrorSelector = "The selected email is invalid";
+    this.forgotPasswordError = page.getByText("The selected email is invalid");
     this.forgotPasswordBtn = page.getByText("Forgot your Password?");
     this.registerBtn = page.getByRole("link", {
       name: "Register your account",
@@ -101,7 +106,7 @@ export class LoginAndRecovery {
   }
 
   async waitForForgotPasswordRequest() {
-    await this.page.waitForRequest(this.forgotPasswordAPI);
+    return this.page.waitForRequest(this.forgotPasswordAPI);
   }
 
   async clickForgotPasswordBtn() {
@@ -110,5 +115,13 @@ export class LoginAndRecovery {
 
   async clickRegisterBtn() {
     await this.registerBtn.click();
+  }
+
+  async clickSetNewPasswordBtn() {
+    await this.setNewPasswordBtn.click();
+  }
+
+  async enterForgotPasswordEmail(email: string) {
+    await this.forgotPasswordEmailInput.fill(email);
   }
 }

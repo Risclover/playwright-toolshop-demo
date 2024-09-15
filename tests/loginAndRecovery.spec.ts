@@ -1,5 +1,4 @@
 import { test, expect } from "../fixtures";
-import { LoginAndRecovery } from "../page-objects/loginAndRecovery";
 import { webkit } from "@playwright/test";
 
 let browser;
@@ -15,22 +14,15 @@ test.describe("Login and recovery", () => {
   test.afterEach(async () => {
     await browser.close();
   });
+
   test("Logs in successfully with valid credentials", async ({
     loginAndRecovery,
-    page,
     userData,
   }) => {
     await loginAndRecovery.login(userData.user2.email, userData.user2.password);
 
-    await expect(
-      page.getByRole("button", {
-        name: `${userData.user2.firstName} ${userData.user2.lastName}`,
-      })
-    ).toBeVisible();
-
-    await expect(
-      page.getByRole("heading", { name: "My account" })
-    ).toBeVisible();
+    await expect(loginAndRecovery.currentUserMenuBtn).toBeVisible();
+    await expect(loginAndRecovery.myAccountHeading).toBeVisible();
   });
 
   test("Login forms are rendered", async ({ loginAndRecovery }) => {
@@ -39,88 +31,80 @@ test.describe("Login and recovery", () => {
     await expect(loginAndRecovery.loginButton).toBeVisible();
   });
 
-  test("Invalid login", async ({ page, loginAndRecovery }) => {
+  test("Invalid login", async ({ loginAndRecovery }) => {
     await loginAndRecovery.clickLoginButton();
-    await expect(page.locator(loginAndRecovery.emailErrorSelector)).toHaveText(
-      "Email is required"
+
+    await expect(loginAndRecovery.emailError).toHaveText("Email is required");
+    await expect(loginAndRecovery.passwordError).toHaveText(
+      "Password is required"
     );
-    await expect(
-      page.locator(loginAndRecovery.passwordErrorSelector)
-    ).toHaveText("Password is required");
   });
 
   test("Entering a password with less than 3 characters results in error", async ({
-    page,
     loginAndRecovery,
   }) => {
     await loginAndRecovery.enterPassword("aa");
     await loginAndRecovery.clickLoginButton();
 
-    await expect(
-      page.locator(loginAndRecovery.passwordErrorSelector)
-    ).toHaveText("Password length is invalid");
+    await expect(loginAndRecovery.passwordError).toHaveText(
+      "Password length is invalid"
+    );
   });
 
   test("Entering a password with 3 characters or more doesn't result in an error", async ({
-    page,
     loginAndRecovery,
+    exampleStrings,
   }) => {
-    await loginAndRecovery.enterPassword("aaa");
+    await loginAndRecovery.enterPassword(exampleStrings.examplePassword);
     await loginAndRecovery.clickLoginButton();
-    await expect(
-      page.locator(loginAndRecovery.passwordErrorSelector)
-    ).not.toBeVisible();
+
+    await expect(loginAndRecovery.passwordError).not.toBeVisible();
   });
 
   test("Entering an invalid email format results in error", async ({
-    page,
     loginAndRecovery,
   }) => {
     await loginAndRecovery.enterEmail("aaa");
     await loginAndRecovery.clickLoginButton();
 
-    await expect(page.locator(loginAndRecovery.emailErrorSelector)).toHaveText(
+    await expect(loginAndRecovery.emailError).toHaveText(
       "Email format is invalid"
     );
   });
 
   test("Entering a valid email format does not result in error", async ({
-    page,
     loginAndRecovery,
+    exampleStrings,
   }) => {
-    await loginAndRecovery.enterEmail("example@gmail.com");
+    await loginAndRecovery.enterEmail(exampleStrings.exampleEmail);
     await loginAndRecovery.clickLoginButton();
 
-    await expect(
-      page.locator(loginAndRecovery.emailErrorSelector)
-    ).not.toBeVisible();
+    await expect(loginAndRecovery.emailError).not.toBeVisible();
   });
 
   test("Clicking the 'register your account' button brings the user to the registration page", async ({
     page,
+    loginAndRecovery,
   }) => {
-    await page.getByRole("link", { name: "Register your account" }).click();
+    await loginAndRecovery.clickRegisterBtn();
 
-    await expect(page).toHaveURL(
-      "https://practicesoftwaretesting.com/auth/register"
-    );
+    await expect(page).toHaveURL(loginAndRecovery.registrationURL);
   });
 
   test("Clicking the 'view password' button unmasks the password", async ({
-    page,
     loginAndRecovery,
+    exampleStrings,
   }) => {
     const passwordInput = loginAndRecovery.passwordInput;
-    await passwordInput.fill("mysecretpassword");
+    await passwordInput.fill(exampleStrings.examplePassword);
 
     await expect(passwordInput).toHaveAttribute("type", "password");
 
-    const viewPasswordButton = page.locator('button:has(svg[data-icon="eye"])');
-    await viewPasswordButton.click();
+    await loginAndRecovery.clickUnmaskPasswordBtn();
 
     await expect(passwordInput).toHaveAttribute("type", "text");
 
-    await page.locator('button:has(svg[data-icon="eye-slash"])').click();
+    await loginAndRecovery.clickMaskPasswordBtn();
 
     await expect(passwordInput).toHaveAttribute("type", "password");
   });
@@ -129,7 +113,7 @@ test.describe("Login and recovery", () => {
     page,
     loginAndRecovery,
   }) => {
-    await page.getByText("Forgot your Password?").click();
+    await loginAndRecovery.clickForgotPasswordBtn();
 
     await expect(page).toHaveURL(loginAndRecovery.forgotPasswordURL);
   });
@@ -137,12 +121,15 @@ test.describe("Login and recovery", () => {
   test("Entering an invalid email into the password reset form results in an error", async ({
     page,
     loginAndRecovery,
+    exampleStrings,
   }) => {
     await page.goto(loginAndRecovery.forgotPasswordURL);
-    await page.getByPlaceholder("Your email *").fill("hello@gmail.com");
-    await page.getByRole("button", { name: "Set New Password" }).click();
+    await loginAndRecovery.enterForgotPasswordEmail(
+      exampleStrings.exampleEmail
+    );
+    await loginAndRecovery.clickSetNewPasswordBtn();
 
-    await expect(page.getByText("The selected email is invalid")).toBeVisible();
+    await expect(loginAndRecovery.forgotPasswordError).toBeVisible();
   });
 
   test("Entering a valid email into the password reset form results in a success message", async ({
@@ -153,12 +140,8 @@ test.describe("Login and recovery", () => {
     await page.goto(loginAndRecovery.forgotPasswordURL);
 
     const [request] = await Promise.all([
-      page.waitForRequest(
-        "https://api.practicesoftwaretesting.com/users/forgot-password"
-      ),
-
-      page.getByPlaceholder("Your email *").fill(userData.user1.email),
-
+      loginAndRecovery.waitForForgotPasswordRequest(),
+      loginAndRecovery.forgotPasswordEmailInput.fill(userData.user1.email),
       page.click('input[type="submit"]'),
     ]);
 
