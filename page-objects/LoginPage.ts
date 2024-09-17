@@ -94,12 +94,6 @@ export class LoginPage extends BasePage {
   }
 
   async resetLoginAttempts(email: string) {
-    // Log in to admin account
-    // await this.login("admin@practicesoftwaretesting.com", "welcome01");
-
-    // // Navigate to 'Users' page
-    // await this.navMenuBtn.click();
-    // await this.page.locator('[data-test="nav-admin-users"]').click();
     await this.page.waitForSelector(`table`);
     const userRow = this.page.locator(`table tbody tr`, {
       has: this.page.locator(`td`, { hasText: email }),
@@ -111,26 +105,17 @@ export class LoginPage extends BasePage {
 
     await userRow.locator(`a:has-text("Edit")`).click();
 
-    // Locate row containing the email from `userData`
-
-    // Ensure the input field is visible and enabled
-
-    // Scroll to the input field if necessary
     await this.page
       .locator("[data-test='failed_login_attempts']")
       .scrollIntoViewIfNeeded();
 
-    // Fill the input field with 50
-    await this.page.locator("[data-test='failed_login_attempts']").fill("50");
+    await this.page.locator("[data-test='failed_login_attempts']").fill("0");
     await this.page.waitForTimeout(1000);
-    // Ensure the Save button is enabled before clicking
 
     await this.page.locator('[data-test="user-submit"]').click();
 
-    // Wait for confirmation message
     await this.page.getByText("User saved!").waitFor({ state: "visible" });
 
-    // Optional: Check that the "User saved!" message is visible
 
     // Log out
     await this.navMenuBtn.click();

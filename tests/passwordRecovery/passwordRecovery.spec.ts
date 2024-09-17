@@ -1,5 +1,5 @@
 // tests/passwordRecovery.spec.ts
-import { test, expect } from "../fixtures/passwordRecovery.fixtures";
+import { test, expect } from "./passwordRecovery.fixtures";
 
 test.describe("Password Recovery Tests", () => {
   test("Password recovery page elements are displayed", async ({

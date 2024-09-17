@@ -1,5 +1,5 @@
 // tests/login/login.spec.ts
-import { test, expect } from "../fixtures/login.fixtures";
+import { test, expect } from "./login.fixtures";
 
 test.describe("Login Page Tests", () => {
   test("Logs in successfully with valid credentials", async ({

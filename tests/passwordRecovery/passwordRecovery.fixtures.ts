@@ -1,7 +1,7 @@
 // fixtures/passwordRecoveryFixtures.ts
 import { expect } from "@playwright/test";
-import { PasswordRecoveryPage } from "../page-objects/PasswordRecoveryPage";
-import { test as base } from "./baseFixtures";
+import { PasswordRecoveryPage } from "../../page-objects/PasswordRecoveryPage";
+import { test as base } from "../../fixtures/base.fixtures";
 
 const test = base.extend<{
   passwordRecoveryPage: PasswordRecoveryPage;
