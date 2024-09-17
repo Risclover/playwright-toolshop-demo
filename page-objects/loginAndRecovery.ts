@@ -15,30 +15,36 @@ interface UserData {
 export class LoginAndRecovery {
   public page: Page;
   public userData: UserData;
+
+  // Locators
   public currentUserMenuBtn: Locator;
   public myAccountHeading: Locator;
   public emailInput: Locator;
   public passwordInput: Locator;
   public loginButton: Locator;
   public navMenu: Locator;
-  public loginURL: string;
   public unmaskPasswordBtn: Locator;
   public maskPasswordBtn: Locator;
-  public forgotPasswordURL: string;
   public emailError: Locator;
   public passwordError: Locator;
-  public forgotPasswordAPI: string;
   public forgotPasswordEmailInput: Locator;
-  public exampleEmail: string;
   public setNewPasswordBtn: Locator;
   public forgotPasswordError: Locator;
   public forgotPasswordBtn: Locator;
   public registerBtn: Locator;
+  public loginError: Locator;
+
+  // URLs
+  public loginURL: string;
+  public forgotPasswordURL: string;
+  public forgotPasswordAPI: string;
   public registrationURL: string;
 
   constructor(page: Page, userData: UserData) {
     this.page = page;
     this.userData = userData;
+
+    // Locators
     this.currentUserMenuBtn = page.getByRole("button", {
       name: `${userData.user2.firstName} ${userData.user2.lastName}`,
     });
@@ -52,12 +58,8 @@ export class LoginAndRecovery {
     this.maskPasswordBtn = page.locator(
       'button:has(svg[data-icon="eye-slash"])'
     );
-    this.forgotPasswordURL =
-      "https://practicesoftwaretesting.com/auth/forgot-password";
     this.emailError = page.locator("[data-test='email-error']");
     this.passwordError = page.locator("[data-test='password-error']");
-    this.forgotPasswordAPI =
-      "https://api.practicesoftwaretesting.com/users/forgot-password";
     this.forgotPasswordEmailInput = page.getByPlaceholder("Your email *");
     this.setNewPasswordBtn = page.getByRole("button", {
       name: "Set New Password",
@@ -67,11 +69,22 @@ export class LoginAndRecovery {
     this.registerBtn = page.getByRole("link", {
       name: "Register your account",
     });
+    this.loginError = page.locator('[data-test="login-error"]');
+
+    // URLs
+    this.forgotPasswordURL =
+      "https://practicesoftwaretesting.com/auth/forgot-password";
+    this.forgotPasswordAPI =
+      "https://api.practicesoftwaretesting.com/users/forgot-password";
     this.registrationURL = "https://practicesoftwaretesting.com/auth/register";
   }
 
   async goto() {
     await this.page.goto(this.loginURL);
+  }
+
+  getCurrentUserMenuBtn(firstName: string, lastName: string): Locator {
+    return this.page.getByRole("button", { name: `${firstName} ${lastName}` });
   }
 
   async enterEmail(email: string) {
@@ -97,12 +110,14 @@ export class LoginAndRecovery {
     await this.page.locator('[data-test="nav-sign-out"]').click();
   }
 
-  async clickUnmaskPasswordBtn() {
-    await this.unmaskPasswordBtn.click();
-  }
-
-  async clickMaskPasswordBtn() {
-    await this.maskPasswordBtn.click();
+  async togglePasswordVisibility() {
+    const isPasswordVisible =
+      (await this.passwordInput.getAttribute("type")) === "text";
+    if (isPasswordVisible) {
+      await this.maskPasswordBtn.click();
+    } else {
+      await this.unmaskPasswordBtn.click();
+    }
   }
 
   async waitForForgotPasswordRequest() {
@@ -123,5 +138,17 @@ export class LoginAndRecovery {
 
   async enterForgotPasswordEmail(email: string) {
     await this.forgotPasswordEmailInput.fill(email);
+  }
+
+  async navigateToPasswordRecoveryPage() {
+    await this.page.goto(this.forgotPasswordURL);
+  }
+
+  async resetLoginAttempts(userEmail: string) {
+    await this.login("admin@practicesoftwaretesting.com", "welcome01");
+
+    await this.getCurrentUserMenuBtn("John", "Doe").click();
+
+    
   }
 }

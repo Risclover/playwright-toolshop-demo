@@ -1,5 +1,5 @@
 import { test as baseTest, expect } from "@playwright/test";
-import { LoginAndRecovery } from "./page-objects/loginAndRecovery";
+import { LoginAndRecovery } from "../page-objects/loginAndRecovery";
 
 interface UserData {
   user1: {
