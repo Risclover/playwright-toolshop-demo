@@ -16,11 +16,12 @@ export class LoginPage extends BasePage {
   public myAccountHeading: Locator;
   public navMenuBtn: Locator;
   public usersPageBtn: Locator;
-  public signoutBtn: Locator;
+  public signOutBtn: Locator;
   public loginError: Locator;
+  public signInBtn: Locator;
 
   // URL
-  private loginURL: string;
+  public loginURL: string;
 
   constructor(page: Page) {
     super(page);
@@ -42,7 +43,8 @@ export class LoginPage extends BasePage {
     this.myAccountHeading = page.getByRole("heading", { name: "My account" });
     this.navMenuBtn = page.locator('[data-test="nav-menu"]');
     this.usersPageBtn = page.locator('[data-test="nav-admin-users"]');
-    this.signoutBtn = page.locator('[data-test="sign-out"]');
+    this.signInBtn = page.locator('[data-test="nav-sign-in"]');
+    this.signOutBtn = page.locator('[data-test="sign-out"]');
     this.loginError = page.locator('[data-test="login-error"]');
 
     // Initialize URL
@@ -73,6 +75,11 @@ export class LoginPage extends BasePage {
     await this.enterEmail(email);
     await this.enterPassword(password);
     await this.clickLoginButton();
+  }
+
+  async logout() {
+    await this.navMenuBtn.click();
+    await this.page.locator('[data-test="nav-sign-out"]').click();
   }
 
   async togglePasswordVisibility() {
@@ -116,10 +123,7 @@ export class LoginPage extends BasePage {
 
     await this.page.getByText("User saved!").waitFor({ state: "visible" });
 
-
-    // Log out
-    await this.navMenuBtn.click();
-    await this.page.locator('[data-test="nav-sign-out"]').click();
+    await this.logout();
   }
 
   async waitForButtonToBeEnabled(buttonLocator) {

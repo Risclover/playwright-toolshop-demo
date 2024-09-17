@@ -1,5 +1,6 @@
 // playwright.config.ts
 import { PlaywrightTestConfig } from "@playwright/test";
+require("dotenv").config();
 
 const config: PlaywrightTestConfig = {
   testDir: "./tests",
