@@ -7,7 +7,7 @@ export const productCategories = {
 };
 
 // Brands of products used in filtering tests
-export const brandCategories = {
+export const productBrands = {
   selectedBrand: "ForgeFlex Tools", // Selected brand for filtering tests
   secondBrand: "MightyCraft Hardware", // Second brand for multi-filter testing
 };

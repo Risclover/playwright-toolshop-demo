@@ -99,37 +99,4 @@ export class LoginPage extends BasePage {
   async clickRegisterLink() {
     await this.registerLink.click();
   }
-
-  async resetLoginAttempts(email: string) {
-    await this.page.waitForSelector(`table`);
-    const userRow = this.page.locator(`table tbody tr`, {
-      has: this.page.locator(`td`, { hasText: email }),
-    });
-
-    if ((await userRow.count()) === 0) {
-      throw new Error(`User with email "${email}" not found.`);
-    }
-
-    await userRow.locator(`a:has-text("Edit")`).click();
-
-    await this.page
-      .locator("[data-test='failed_login_attempts']")
-      .scrollIntoViewIfNeeded();
-
-    await this.page.locator("[data-test='failed_login_attempts']").fill("0");
-    await this.page.waitForTimeout(1000);
-
-    await this.page.locator('[data-test="user-submit"]').click();
-
-    await this.page.getByText("User saved!").waitFor({ state: "visible" });
-
-    await this.logout();
-  }
-
-  async waitForButtonToBeEnabled(buttonLocator) {
-    await this.page.waitForFunction(async (locator) => {
-      const button = document.querySelector(locator);
-      return button && !button.disabled;
-    }, buttonLocator);
-  }
 }

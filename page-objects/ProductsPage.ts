@@ -20,6 +20,7 @@ export class ProductsPage extends BasePage {
     await this.page.goto("https://practicesoftwaretesting.com");
   }
 
+  // Fetch product info (via JSON) by page
   async fetchProductsByPage(pageNumber: number) {
     const response = await this.page.waitForResponse(
       (response) =>
@@ -40,12 +41,13 @@ export class ProductsPage extends BasePage {
     await this.page.getByLabel(`Page-${pageNumber}`).click();
   }
 
+  // Navigate to last pagination page
   async navigateToLastPage() {
     const lastPageItem = this.page
       .locator(".pagination li")
-      .filter({ hasNotText: "«" })
-      .filter({ hasNotText: "»" })
-      .last();
+      .filter({ hasNotText: "«" }) // Remove the "Prev" button from the list of possibilities
+      .filter({ hasNotText: "»" }) // Remove the "Next" button from the list of possibilities
+      .last(); // Specifically select the last element
 
     await lastPageItem.click();
   }
@@ -78,10 +80,12 @@ export class ProductsPage extends BasePage {
     await this.page.waitForSelector(this.productSelector);
   }
 
+  // Filter by category
   async chooseCategory(category: string) {
     await this.page.getByLabel(category).click();
   }
 
+  // Filter by brand
   async chooseBrand(brand: string) {
     await this.page.getByLabel(brand).click();
   }
@@ -94,11 +98,11 @@ export class ProductsPage extends BasePage {
     await this.prevBtn.click();
   }
 
-  getNextListItem() {
+  getNextBtn() {
     return this.page.locator(".pagination li").filter({ hasText: "»" });
   }
 
-  getPrevListItem() {
+  getPrevBtn() {
     return this.page.locator(".pagination li").filter({ hasText: "«" });
   }
 }
