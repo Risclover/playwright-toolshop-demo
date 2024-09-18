@@ -17,7 +17,7 @@ export class ProductsPage extends BasePage {
   }
 
   async goto() {
-    await this.page.goto(`${process.env.BASE_URL}/products`);
+    await this.page.goto("https://practicesoftwaretesting.com");
   }
 
   async fetchProductsByPage(pageNumber: number) {
@@ -37,7 +37,7 @@ export class ProductsPage extends BasePage {
   }
 
   async navigateToPage(pageNumber: number) {
-    await this.page.getByRole("link", { name: `Page ${pageNumber}` }).click();
+    await this.page.getByLabel(`Page-${pageNumber}`).click();
   }
 
   async navigateToLastPage() {
@@ -61,6 +61,16 @@ export class ProductsPage extends BasePage {
     return this.page.waitForResponse(
       (response) =>
         response.url().includes("by_brand") && response.status() === 200
+    );
+  }
+
+  async waitForPageCategoryBrandResponse(pageNumber: number) {
+    return this.page.waitForResponse(
+      (response) =>
+        response.url().includes(`page=${pageNumber}`) &&
+        response.url().includes("by_category") &&
+        response.url().includes("by_brand") &&
+        response.status() === 200
     );
   }
 

@@ -1,24 +1,12 @@
 // tests/registration/registration.spec.ts
 import { test, expect } from "./registration.fixtures";
-import { errorMessages } from "./data/errorMessages";
 import { UserData } from "../../page-objects/RegistrationPage";
-import { generateUniqueUserData } from "../../test-data/userData";
+import {
+  generateUniqueUserData,
+  errorMessages,
+} from "../../test-data/registrationData";
 
 test.describe("Registration Page Tests", () => {
-  let defaultUserData = {
-    firstName: "John",
-    lastName: "Doe",
-    dateOfBirth: "1990-01-01",
-    address: "123 Main St",
-    postcode: "12345",
-    city: "Anytown",
-    state: "State",
-    country: "US",
-    phone: "5551234567",
-    email: `user29@example.com`,
-    password: "Pswrd12!",
-  };
-
   test("Renders form elements correctly", async ({ registrationPage }) => {
     const inputs = [
       registrationPage.firstNameInput,
