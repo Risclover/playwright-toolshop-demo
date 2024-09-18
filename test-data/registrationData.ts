@@ -1,6 +1,7 @@
 // test-data/userData.ts
 import { UserData } from "../page-objects/RegistrationPage";
 
+// All info required to register for an account
 export const defaultUserData: UserData = {
   firstName: "John",
   lastName: "Doe",
@@ -15,6 +16,7 @@ export const defaultUserData: UserData = {
   password: "Psswd1?!",
 };
 
+// Generate unique email (to allow for infinite testing)
 export function generateUniqueUserData(): UserData {
   const timestamp = Date.now();
   return {
@@ -23,6 +25,7 @@ export function generateUniqueUserData(): UserData {
   };
 }
 
+// Error messages for form fields
 export const errorMessages = {
   requiredFields: {
     "first-name-error": "First name is required",
@@ -37,6 +40,7 @@ export const errorMessages = {
     "email-error": "Email is required",
     "password-error": "Password is required",
   },
+
   validationErrors: {
     firstNameTooLong:
       "The first name field must not be greater than 40 characters.",

@@ -11,6 +11,7 @@ export interface UserData {
   admin: User;
 }
 
+// All valid data for user accounts on practicesoftwaretesting.com so we can run through our tests without issues (for example, testing the account lock feature would be with 1 user and other activities with the other so the account isn't locked out for subsequent/repeat tests)
 export const userData: UserData = {
   user1: {
     email: "customer@practicesoftwaretesting.com",
@@ -37,6 +38,7 @@ export interface ExampleStrings {
   examplePassword: string;
 }
 
+// Email and password for non-existing account
 export const exampleStrings: ExampleStrings = {
   exampleEmail: "example@gmail.com",
   examplePassword: "mysecretpassword",

@@ -3,7 +3,7 @@ import { test as base } from "@playwright/test";
 import { RegistrationPage } from "../../page-objects/RegistrationPage";
 import { LoginPage } from "../../page-objects/LoginPage";
 import { AdminPage } from "../../page-objects/AdminPage";
-import { generateUniqueUserData } from "../../test-data/userData";
+import { generateUniqueUserData } from "../../test-data/registrationData";
 import { UserData } from "../../page-objects/RegistrationPage";
 
 type TestFixtures = {

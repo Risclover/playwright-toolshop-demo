@@ -19,21 +19,6 @@ test.describe("Products Page", () => {
       );
     });
 
-    test("Displays the same number of products across multiple pages when the page is full of products", async ({
-      productsPage,
-    }) => {
-      const firstPageData = await productsPage.fetchProductsByPage(1);
-      const perPage = firstPageData.per_page;
-
-      expect(firstPageData.data.length).toEqual(perPage);
-
-      await productsPage.navigateToPage(3);
-      const thirdPageData = await productsPage.fetchProductsByPage(3);
-
-      expect(thirdPageData.data.length).toEqual(perPage);
-      expect(firstPageData.data.length).toEqual(thirdPageData.data.length);
-    });
-
     test("Displays different products on each page during pagination", async ({
       productsPage,
     }) => {

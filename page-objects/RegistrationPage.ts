@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { BasePage } from "./BasePage";
-import { generateUniqueUserData } from "../test-data/userData";
+import { generateUniqueUserData } from "../test-data/registrationData";
 
 export interface UserData {
   firstName: string;

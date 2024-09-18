@@ -1,11 +1,13 @@
+// Categories of products used in filtering tests
 export const productCategories = {
-  selectedCategory: "Hammer",
-  secondCategory: "Wrench",
-  noResultsCategory: "Grinder",
-  multiplePagesCategory: "Measures",
+  selectedCategory: "Hammer", // Selected category for filtering tests
+  secondCategory: "Wrench", // Second category for multi-filter testing
+  noResultsCategory: "Grinder", // Category with no results to test empty product page
+  multiplePagesCategory: "Measures", // Category with enough products to span multiple pages
 };
 
+// Brands of products used in filtering tests
 export const brandCategories = {
-  selectedBrand: "ForgeFlex Tools",
-  secondBrand: "MightyCraft Hardware",
+  selectedBrand: "ForgeFlex Tools", // Selected brand for filtering tests
+  secondBrand: "MightyCraft Hardware", // Second brand for multi-filter testing
 };
