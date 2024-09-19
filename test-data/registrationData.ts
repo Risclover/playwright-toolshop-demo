@@ -65,3 +65,122 @@ export const errorMessages = {
     phoneTooLong: "The phone field must not be greater than 24 characters.",
   },
 };
+
+export const fieldValidationTests = [
+  {
+    field: "firstName" as keyof UserData,
+    testCases: [
+      {
+        value: "a".repeat(41),
+        message: errorMessages.validationErrors.firstNameTooLong,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "lastName" as keyof UserData,
+    testCases: [
+      {
+        value: "a".repeat(41),
+        message: errorMessages.validationErrors.lastNameTooLong,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "dateOfBirth" as keyof UserData,
+    testCases: [
+      {
+        value: "2024-01-01",
+        message: errorMessages.validationErrors.userTooYoung,
+      },
+      {
+        value: "1900-01-01",
+        message: errorMessages.validationErrors.userTooOld,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "address" as keyof UserData,
+    testCases: [
+      {
+        value: "a".repeat(71),
+        message: errorMessages.validationErrors.addressTooLong,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "postcode" as keyof UserData,
+    testCases: [
+      {
+        value: "a".repeat(11),
+        message: errorMessages.validationErrors.postcodeTooLong,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "city" as keyof UserData,
+    testCases: [
+      {
+        value: "a".repeat(41),
+        message: errorMessages.validationErrors.cityTooLong,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "state" as keyof UserData,
+    testCases: [
+      {
+        value: "a".repeat(41),
+        message: errorMessages.validationErrors.stateTooLong,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "email" as keyof UserData,
+    testCases: [
+      {
+        value: "customer@practicesoftwaretesting.com",
+        message: errorMessages.validationErrors.emailExists,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "password" as keyof UserData,
+    testCases: [
+      {
+        value: "Aaaa1!",
+        message: errorMessages.validationErrors.passwordTooShort,
+      },
+      {
+        value: "aaaaaa1!",
+        message: errorMessages.validationErrors.passwordCaseRequirement,
+      },
+      {
+        value: "Aaaaaaaa!",
+        message: errorMessages.validationErrors.passwordNumberRequirement,
+      },
+      {
+        value: "Aaaaaaaa1",
+        message: errorMessages.validationErrors.passwordSymbolRequirement,
+      },
+    ],
+    errorDataTest: "register-error",
+  },
+  {
+    field: "phone" as keyof UserData,
+    testCases: [
+      {
+        value: "111-111-1111",
+        message: errorMessages.validationErrors.phoneNumbersOnly,
+      },
+    ],
+    errorDataTest: "phone-error",
+  },
+];
