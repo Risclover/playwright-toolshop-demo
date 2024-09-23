@@ -1,4 +1,3 @@
-// page-objects/BasePage.ts
 import { Page } from "@playwright/test";
 
 export class BasePage {

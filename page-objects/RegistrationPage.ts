@@ -71,6 +71,7 @@ export class RegistrationPage extends BasePage {
   async fillForm(data: Partial<UserData>) {
     for (const [key, value] of Object.entries(data)) {
       const fieldLocator = this.getFieldLocator(key as keyof UserData);
+
       if (fieldLocator) {
         if (key === "country" && value) {
           await this.countryInput.selectOption(value as string);

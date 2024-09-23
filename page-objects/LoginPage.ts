@@ -20,7 +20,7 @@ export class LoginPage extends BasePage {
   public loginError: Locator;
   public signInBtn: Locator;
 
-  // URL
+  // URLs
   public loginURL: string;
 
   constructor(page: Page) {
@@ -47,41 +47,49 @@ export class LoginPage extends BasePage {
     this.signOutBtn = page.locator('[data-test="sign-out"]');
     this.loginError = page.locator('[data-test="login-error"]');
 
-    // Initialize URL
+    // Initialize URLs
     this.loginURL = "https://practicesoftwaretesting.com/auth/login";
   }
 
+  // Navigate to login form
   async navigateToLoginPage() {
     await this.goto(this.loginURL);
   }
 
+  // Get current menu button element based on user's name
   getCurrentUserMenuBtn(firstName: string, lastName: string): Locator {
     return this.page.getByRole("button", { name: `${firstName} ${lastName}` });
   }
 
+  // Enter email into email field
   async enterEmail(email: string) {
     await this.emailInput.fill(email);
   }
 
+  // Enter password into password field
   async enterPassword(password: string) {
     await this.passwordInput.fill(password);
   }
 
+  // Click submit button
   async clickLoginButton() {
     await this.loginButton.click();
   }
 
+  // Log into account using given email and password
   async login(email: string, password: string) {
     await this.enterEmail(email);
     await this.enterPassword(password);
     await this.clickLoginButton();
   }
 
+  // Log out of account
   async logout() {
     await this.navMenuBtn.click();
     await this.page.locator('[data-test="nav-sign-out"]').click();
   }
 
+  // Toggle password visibility by clicking button
   async togglePasswordVisibility() {
     const isPasswordVisible =
       (await this.passwordInput.getAttribute("type")) === "text";
@@ -92,10 +100,12 @@ export class LoginPage extends BasePage {
     }
   }
 
+  // Navigate to password recovery page from login page
   async clickForgotPasswordLink() {
     await this.forgotPasswordLink.click();
   }
 
+  // Navigate to registration page from login page
   async clickRegisterLink() {
     await this.registerLink.click();
   }

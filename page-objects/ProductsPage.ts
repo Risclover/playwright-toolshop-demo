@@ -1,5 +1,5 @@
 // page-objects/ProductsPage.ts
-import { Page, Locator, Response } from "@playwright/test";
+import { Page, Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class ProductsPage extends BasePage {

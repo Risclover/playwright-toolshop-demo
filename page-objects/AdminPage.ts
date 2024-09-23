@@ -23,7 +23,7 @@ export class AdminPage extends BasePage {
     this.adminUsersURL = `${process.env.BASE_URL}/admin/users`;
   }
 
-  // Login as admin using credentials from environment variables
+  // Login as admin
   async loginAsAdmin() {
     const adminEmail = process.env.ADMIN_EMAIL;
     const adminPassword = process.env.ADMIN_PASSWORD;
@@ -44,55 +44,6 @@ export class AdminPage extends BasePage {
     await this.navMenu.click();
     await this.usersNavLink.click();
     await expect(this.page).toHaveURL(this.adminUsersURL);
-  }
-
-  // Delete a user by their email
-  async deleteUserByEmail(email: string) {
-    await this.navigateToUsersPage();
-
-    await this.page.waitForSelector(`table`);
-    const userRow = this.page.locator(`table tbody tr`, {
-      has: this.page.getByRole("cell", {
-        name: email,
-      }),
-    });
-
-    if ((await userRow.count()) === 0) {
-      throw new Error(`User with email "${email}" not found.`);
-    }
-
-    await userRow.locator(`button:has-text("Delete")`).click();
-
-    // Wait for the user row to disappear
-    await expect(userRow).toBeHidden();
-    await this.page.getByText("User deleted.").waitFor({ state: "visible" });
-    await this.page.getByText("User deleted.").waitFor({ state: "hidden" });
-  }
-
-  async resetLoginAttempts(email: string) {
-    await this.page.waitForSelector(`table`);
-    const userRow = this.page.locator(`table tbody tr`, {
-      has: this.page.locator(`td`, { hasText: email }),
-    });
-
-    if ((await userRow.count()) === 0) {
-      throw new Error(`User with email "${email}" not found.`);
-    }
-
-    await userRow.locator(`a:has-text("Edit")`).click();
-
-    await this.page
-      .locator("[data-test='failed_login_attempts']")
-      .scrollIntoViewIfNeeded();
-
-    await this.page.locator("[data-test='failed_login_attempts']").fill("0");
-    await this.page.waitForTimeout(1000);
-
-    await this.page.locator('[data-test="user-submit"]').click();
-
-    await this.page.getByText("User saved!").waitFor({ state: "visible" });
-
-    await this.logout();
   }
 
   // Logout from admin account

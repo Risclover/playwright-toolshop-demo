@@ -1,4 +1,3 @@
-// tests/products/products.spec.ts
 import { test, expect } from "./products.fixtures";
 import { productCategories, productBrands } from "../../test-data/productData";
 
