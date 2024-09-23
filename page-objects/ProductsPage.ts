@@ -3,19 +3,27 @@ import { Page, Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class ProductsPage extends BasePage {
+  // Locators
   readonly nextBtn: Locator;
   readonly prevBtn: Locator;
-  readonly productSelector: string;
   readonly noResults: Locator;
+
+  // Selectors
+  readonly productSelector: string;
 
   constructor(page: Page) {
     super(page);
+
+    // Locators
     this.nextBtn = page.getByRole("button", { name: "Next" });
     this.prevBtn = page.getByRole("button", { name: "Previous" });
-    this.productSelector = 'a[data-test^="product-"]';
     this.noResults = page.locator('[data-test="no-results"]');
+
+    // Selectors
+    this.productSelector = 'a[data-test^="product-"]';
   }
 
+  // Navigate to homepage of website
   async navigateToHomepage() {
     await this.goto("https://practicesoftwaretesting.com");
   }
@@ -30,6 +38,7 @@ export class ProductsPage extends BasePage {
     return response.json();
   }
 
+  // Fetch data for current page
   async fetchCurrentPageData() {
     const response = await this.page.waitForResponse((response) =>
       response.url().includes("products?")
@@ -37,6 +46,7 @@ export class ProductsPage extends BasePage {
     return response.json();
   }
 
+  // Navigate to specific product page
   async navigateToPage(pageNumber: number) {
     await this.page.getByLabel(`Page-${pageNumber}`).click();
   }
@@ -52,6 +62,7 @@ export class ProductsPage extends BasePage {
     await lastPageItem.click();
   }
 
+  // Wait for response after selecting category
   async waitForCategoryResponse() {
     return this.page.waitForResponse(
       (response) =>
@@ -59,6 +70,7 @@ export class ProductsPage extends BasePage {
     );
   }
 
+  // Wait for response after selecting brand
   async waitForBrandResponse() {
     return this.page.waitForResponse(
       (response) =>
@@ -66,6 +78,7 @@ export class ProductsPage extends BasePage {
     );
   }
 
+  // Wait for response after selecting category and brand
   async waitForPageCategoryBrandResponse(pageNumber: number) {
     return this.page.waitForResponse(
       (response) =>
@@ -76,6 +89,7 @@ export class ProductsPage extends BasePage {
     );
   }
 
+  // Wait for product's selector to appear within DOM
   async waitForProductSelector() {
     await this.page.waitForSelector(this.productSelector);
   }
@@ -90,18 +104,22 @@ export class ProductsPage extends BasePage {
     await this.page.getByLabel(brand).click();
   }
 
+  // Click 'Next' button
   async clickNext() {
     await this.nextBtn.click();
   }
 
+  // Click 'Prev' button
   async clickPrev() {
     await this.prevBtn.click();
   }
 
+  // Retrieve 'Next' button HTML
   getNextBtn() {
     return this.page.locator(".pagination li").filter({ hasText: "»" });
   }
 
+  // Retrieve 'Prev' button HTML
   getPrevBtn() {
     return this.page.locator(".pagination li").filter({ hasText: "«" });
   }
