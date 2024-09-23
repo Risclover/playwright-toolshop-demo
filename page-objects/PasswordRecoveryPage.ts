@@ -29,7 +29,7 @@ export class PasswordRecoveryPage extends BasePage {
 
   // Navigate to password recovery page
   async navigate() {
-    await this.page.goto(this.forgotPasswordURL);
+    await this.goto(this.forgotPasswordURL);
   }
 
   // Enter email into email field
@@ -48,7 +48,7 @@ export class PasswordRecoveryPage extends BasePage {
     await this.clickSubmitButton();
   }
 
-  // Wait for request from forgot password API 
+  // Wait for request from forgot password API
   waitForForgotPasswordRequest() {
     return this.page.waitForRequest(this.forgotPasswordAPI);
   }

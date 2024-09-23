@@ -16,8 +16,8 @@ export class ProductsPage extends BasePage {
     this.noResults = page.locator('[data-test="no-results"]');
   }
 
-  async goto() {
-    await this.page.goto("https://practicesoftwaretesting.com");
+  async navigateToHomepage() {
+    await this.goto("https://practicesoftwaretesting.com");
   }
 
   // Fetch product info (via JSON) by page

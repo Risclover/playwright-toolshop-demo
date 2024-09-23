@@ -12,7 +12,7 @@ export const test = base.extend<TestFixtures>({
     const productsPage = new ProductsPage(page);
 
     // Navigate to the homepage (which is also the storefront) before each test
-    await productsPage.goto();
+    await productsPage.navigateToHomepage();
 
     // Set up network routing to handle any intercepted requests
     await page.route("**/products?*", (route) => {
