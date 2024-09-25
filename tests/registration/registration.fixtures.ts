@@ -1,4 +1,3 @@
-// tests/registration/registration.fixtures.ts
 import { test as base } from "@playwright/test";
 import { RegistrationPage } from "../../page-objects/RegistrationPage";
 import { LoginPage } from "../../page-objects/LoginPage";

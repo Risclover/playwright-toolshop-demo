@@ -1,4 +1,3 @@
-// tests/login/login.spec.ts
 import { test, expect } from "./login.fixtures";
 import { exampleStrings, userData } from "../../test-data/loginData";
 

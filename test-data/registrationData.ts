@@ -1,4 +1,3 @@
-// test-data/userData.ts
 import { UserData } from "../page-objects/RegistrationPage";
 
 // All info required to register for an account

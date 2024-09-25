@@ -1,4 +1,3 @@
-// tests/passwordRecovery.spec.ts
 import { test, expect } from "./passwordRecovery.fixtures";
 import { userData } from "../../test-data/loginData";
 

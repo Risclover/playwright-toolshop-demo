@@ -1,4 +1,3 @@
-// page-objects/PasswordRecoveryPage.ts
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
