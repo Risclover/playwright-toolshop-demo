@@ -37,7 +37,7 @@ export class RegistrationPage extends BasePage {
   readonly registerBtn: Locator;
   readonly registerError: Locator;
 
-  // URL
+  // URLs
   readonly registrationURL: string;
 
   constructor(page: Page) {
@@ -58,13 +58,13 @@ export class RegistrationPage extends BasePage {
     this.registerBtn = page.locator('[data-test="register-submit"]');
     this.registerError = page.locator('[data-test="register-error"]');
 
-    // URL
+    // URLs
     this.registrationURL = `${process.env.BASE_URL}/auth/register`;
   }
 
   // Navigate to the registration page
-  async goto() {
-    await this.page.goto(this.registrationURL);
+  async navigate() {
+    await this.goto(this.registrationURL);
   }
 
   // Fill in registration form fields
@@ -113,10 +113,11 @@ export class RegistrationPage extends BasePage {
     errorDataTest: string
   ) {
     for (const { value, message } of testCases) {
-      await this.goto(); // Ensure the form is reset
-      const userData = generateUniqueUserData();
+      await this.navigate(); // Ensure the form is reset by "refreshing" the page
+      const userData = generateUniqueUserData(); // Generate unique user data
       const testData = { ...userData, [fieldName]: value };
-      await this.fillForm(testData);
+      await this.fillForm(testData); // F
+      
       await this.registerBtn.click();
 
       const errorLocator = this.page.locator(`[data-test="${errorDataTest}"]`);

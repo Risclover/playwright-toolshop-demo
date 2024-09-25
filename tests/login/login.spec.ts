@@ -2,6 +2,7 @@
 import { test, expect } from "./login.fixtures";
 
 test.describe("Login Page Tests", () => {
+  // Verify that user is able to login when submitting the form with correct credentials
   test("Logs in successfully with valid credentials", async ({
     loginPage,
     userData,
@@ -22,7 +23,7 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.myAccountHeading).toBeVisible();
   });
 
-  // Ensure all elements are rendered
+  // Ensure all form elements are rendered
   test("Login form elements are rendered", async ({ loginPage }) => {
     // Email input
     await expect(loginPage.emailInput).toBeVisible();
@@ -32,6 +33,7 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.loginButton).toBeVisible();
   });
 
+  // Submitting the login form with an incorrect email/password combo results in error
   test("Invalid login shows error messages", async ({ loginPage }) => {
     // Click the 'Login' button without filling out the form fields
     await loginPage.clickLoginButton();
@@ -41,6 +43,7 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.passwordError).toHaveText("Password is required");
   });
 
+  // Submitting the login form with a short password results in error
   test("Short password results in error", async ({ loginPage }) => {
     // Enter short password
     await loginPage.enterPassword("aa");
@@ -54,6 +57,7 @@ test.describe("Login Page Tests", () => {
     );
   });
 
+  // Submitting the login form with a valid password does not result in error
   test("Valid password does not show error", async ({
     loginPage,
     exampleStrings,
@@ -68,6 +72,7 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.passwordError).not.toBeVisible();
   });
 
+  // Submitting the login form with an invalid email format results in error
   test("Invalid email format results in error", async ({ loginPage }) => {
     // Enter email that is formatted incorrectly
     await loginPage.enterEmail("aaa");
@@ -79,6 +84,7 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.emailError).toHaveText("Email format is invalid");
   });
 
+  // Submitting the login form with a valid email does not result in error
   test("Valid email format does not show error", async ({
     loginPage,
     exampleStrings,
@@ -92,6 +98,7 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.emailError).not.toBeVisible();
   });
 
+  // Verify that the 'Register for new account' takes user to registration page
   test("Register link navigates to registration page", async ({
     page,
     loginPage,
@@ -105,6 +112,7 @@ test.describe("Login Page Tests", () => {
     );
   });
 
+  // Verify that password visibility (mask password/unmask password) works
   test("Password visibility toggle works correctly", async ({
     loginPage,
     exampleStrings,
@@ -128,6 +136,7 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.passwordInput).toHaveAttribute("type", "password");
   });
 
+  // Verify that the 'Forgot password' link correctly navigates to password recovery
   test("Forgot password link navigates to reset page", async ({
     page,
     loginPage,
@@ -141,15 +150,18 @@ test.describe("Login Page Tests", () => {
     );
   });
 
+  // Confirm that account locks after failed login attempts
   test("Account locks after multiple failed login attempts", async ({
+    page,
     loginPage,
     userData,
   }) => {
-    // Attempt login 3 times using a valid email and incorrect password
-    for (let i = 0; i < 4; i++) {
+    // Attempt login 4 times using a valid email and incorrect password
+    for (let i = 0; i < 5; i++) {
       await loginPage.login(userData.user1.email, "wrongpassword");
     }
 
+    await page.waitForSelector('[data-test="login-error"]');
     // Expect "account locked" error message
     await expect(loginPage.loginError).toHaveText(
       "Account locked, too many failed attempts. Please contact the administrator."

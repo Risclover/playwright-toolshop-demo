@@ -16,7 +16,7 @@ type TestFixtures = {
 export const test = base.extend<TestFixtures>({
   registrationPage: async ({ page }, use) => {
     const registrationPage = new RegistrationPage(page);
-    await registrationPage.goto();
+    await registrationPage.navigate();
     await use(registrationPage);
   },
 

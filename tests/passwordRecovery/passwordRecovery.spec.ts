@@ -2,6 +2,7 @@
 import { test, expect } from "./passwordRecovery.fixtures";
 
 test.describe("Password Recovery Tests", () => {
+  // Password recovery form elements are rendered
   test("Password recovery page elements are displayed", async ({
     passwordRecoveryPage,
   }) => {
@@ -10,6 +11,7 @@ test.describe("Password Recovery Tests", () => {
     await expect(passwordRecoveryPage.emailError).not.toBeVisible();
   });
 
+  // 'Required' error appears when the user clicks the submit button while the email field is empty
   test("Submitting without email shows required error", async ({
     passwordRecoveryPage,
   }) => {
@@ -19,7 +21,8 @@ test.describe("Password Recovery Tests", () => {
     );
   });
 
-  test("Valid email in password reset sends request successfully", async ({
+  // Form submits for email associated with an account
+  test("Valid email in password reset form sends request successfully", async ({
     passwordRecoveryPage,
     userData,
   }) => {

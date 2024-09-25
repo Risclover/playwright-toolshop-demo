@@ -52,6 +52,7 @@ test.describe("Registration Page Tests", () => {
     });
   }
 
+  // Verify that a user can successfully register for a new account and subsequently log into that account
   test("Successful registration and login", async ({
     registrationPage,
     loginPage,

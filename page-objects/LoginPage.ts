@@ -93,6 +93,8 @@ export class LoginPage extends BasePage {
   async togglePasswordVisibility() {
     const isPasswordVisible =
       (await this.passwordInput.getAttribute("type")) === "text";
+
+    // Toggle password visibility (based on which button is active - mask/unmask password)
     if (isPasswordVisible) {
       await this.maskPasswordBtn.click();
     } else {
