@@ -7,19 +7,25 @@ test.describe("Products Page", () => {
     test("Clicking on a pagination number navigates to the corresponding product page", async ({
       productsPage,
     }) => {
-      // Fetch products from the first page
-      const firstPageProducts = await productsPage.fetchProductsByPage(1);
-
       // Navigate to the 3rd page
       await productsPage.navigateToPage(3);
 
-      // Fetch products from the third page
-      const thirdPageProducts = await productsPage.fetchProductsByPage(3);
-
-      // Verify that products on the third page are different from the first page
-      expect(thirdPageProducts.data[0].id).not.toEqual(
-        firstPageProducts.data[0].id
+      // Fetch expected products for page 3 via API
+      const expectedProductsResponse = await productsPage.fetchProductsByPage(
+        3
       );
+      const expectedProducts = expectedProductsResponse.data;
+
+      // Get the expected product IDs as strings
+      const expectedProductIds = expectedProducts.map((product) =>
+        product.id.toString()
+      );
+
+      // Get the product IDs displayed on the UI
+      const displayedProductIds = await productsPage.getDisplayedProducts();
+
+      // Verify that the displayed product IDs match the expected product IDs for page 3
+      expect(displayedProductIds).toEqual(expectedProductIds);
     });
 
     // Ensure that different products are shown on different pages during pagination
@@ -289,6 +295,8 @@ test.describe("Products Page", () => {
         expect(categoryName).toContain(
           productCategories.secondCategory.toLowerCase()
         );
+
+        // ...and that they don't belong to the first (now unchecked) category
         expect(categoryName).not.toContain(
           productCategories.selectedCategory.toLowerCase()
         );

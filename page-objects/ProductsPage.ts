@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, ElementHandle } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class ProductsPage extends BasePage {
@@ -122,5 +122,31 @@ export class ProductsPage extends BasePage {
   // Retrieve 'Prev' button HTML
   getPrevBtn() {
     return this.page.locator(".pagination li").filter({ hasText: "«" });
+  }
+
+  async getDisplayedProducts(): Promise<string[]> {
+    // Wait for the product items to be visible on the page
+    await this.page.waitForSelector(this.productSelector);
+
+    // Get all elements matching the product item selector
+    const productElements: ElementHandle<Element>[] = await this.page.$$(
+      this.productSelector
+    );
+
+    // Iterate over each product element to extract the product ID
+    const displayedProductIds: string[] = [];
+
+    for (const element of productElements) {
+      // Get the value of the data-test attribute
+      const dataTestAttribute = await element.getAttribute("data-test");
+      if (dataTestAttribute) {
+        // Extract the product ID from the data-test attribute
+        const productId = dataTestAttribute.replace("product-", "");
+        // Add the product ID to the array
+        displayedProductIds.push(productId);
+      }
+    }
+
+    return displayedProductIds;
   }
 }
