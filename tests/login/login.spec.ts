@@ -1,12 +1,10 @@
 // tests/login/login.spec.ts
 import { test, expect } from "./login.fixtures";
+import { exampleStrings, userData } from "../../test-data/loginData";
 
 test.describe("Login Page Tests", () => {
   // Verify that user is able to login when submitting the form with correct credentials
-  test("Logs in successfully with valid credentials", async ({
-    loginPage,
-    userData,
-  }) => {
+  test("Logs in successfully with valid credentials", async ({ loginPage }) => {
     // Log in with user2's email and password
     await loginPage.login(userData.user2.email, userData.user2.password);
 
@@ -58,10 +56,7 @@ test.describe("Login Page Tests", () => {
   });
 
   // Submitting the login form with a valid password does not result in error
-  test("Valid password does not show error", async ({
-    loginPage,
-    exampleStrings,
-  }) => {
+  test("Valid password does not show error", async ({ loginPage }) => {
     // Enter valid password
     await loginPage.enterPassword(exampleStrings.examplePassword);
 
@@ -154,7 +149,6 @@ test.describe("Login Page Tests", () => {
   test("Account locks after multiple failed login attempts", async ({
     page,
     loginPage,
-    userData,
   }) => {
     // Attempt login 4 times using a valid email and incorrect password
     for (let i = 0; i < 5; i++) {

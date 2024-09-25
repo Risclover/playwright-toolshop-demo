@@ -66,6 +66,7 @@ export const errorMessages = {
   },
 };
 
+// Data for field validation testing
 export const fieldValidationTests = [
   {
     field: "firstName" as keyof UserData,
