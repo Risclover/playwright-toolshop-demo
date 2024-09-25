@@ -1,4 +1,3 @@
-// tests/registration/registration.spec.ts
 import { test, expect } from "./registration.fixtures";
 import {
   errorMessages,
