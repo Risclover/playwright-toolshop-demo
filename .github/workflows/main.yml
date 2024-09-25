@@ -13,6 +13,6 @@ jobs:
       uses: SpicyPizza/create-envfile@v1
       with:
         envkey_BASE_URL: "https://practicesoftwaretesting.com"
-        envkey_ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }
-        envkey_ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }
+        envkey_ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+        envkey_ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         file_name: .env
