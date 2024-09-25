@@ -62,6 +62,12 @@ export class ProductsPage extends BasePage {
     await lastPageItem.click();
   }
 
+  async waitForPageResponse(page: number) {
+    return this.page.waitForResponse(
+      (response) =>
+        response.url().includes(`page=${page}`) && response.status() === 200
+    );
+  }
   // Wait for response after selecting category
   async waitForCategoryResponse() {
     return this.page.waitForResponse(

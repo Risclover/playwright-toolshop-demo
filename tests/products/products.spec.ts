@@ -28,23 +28,33 @@ test.describe("Products Page", () => {
       expect(displayedProductIds).toEqual(expectedProductIds);
     });
 
-    // Ensure that different products are shown on different pages during pagination
+    // Test to ensure that different products are shown on different pages during pagination
     test("Displays different products on each page during pagination", async ({
       productsPage,
     }) => {
-      // Fetch products from first page
-      const firstPageProducts = await productsPage.fetchProductsByPage(1);
+      await productsPage.waitForPageResponse(1);
+      // Get the product IDs displayed on the first page from the UI
+      const firstPageDisplayedProductIds =
+        await productsPage.getDisplayedProducts();
 
-      // Navigate to the next page
-      await productsPage.clickNext();
+      // Navigate to the next page (page 2)
+      await productsPage.navigateToPage(2);
+      await productsPage.waitForPageResponse(2);
 
-      // Fetch products from the second page
-      const secondPageProducts = await productsPage.fetchProductsByPage(2);
+      // Get the product IDs displayed on the second page from the UI
+      const secondPageDisplayedProductIds =
+        await productsPage.getDisplayedProducts();
 
-      // Ensure that the first product on the second page is different from the first product on the first page
-      expect(secondPageProducts.data[0].id).not.toEqual(
-        firstPageProducts.data[0].id
+      // Verify that the products on the second page are different from the first page
+      expect(secondPageDisplayedProductIds).not.toEqual(
+        firstPageDisplayedProductIds
       );
+
+      // Optionally, ensure there is no overlap between the two sets of products
+      const overlappingProductIds = firstPageDisplayedProductIds.filter((id) =>
+        secondPageDisplayedProductIds.includes(id)
+      );
+      expect(overlappingProductIds.length).toEqual(0);
     });
 
     // Test to verify that clicking the 'Next' button navigates to the next page
