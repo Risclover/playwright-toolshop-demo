@@ -1,7 +1,6 @@
 // tests/login/login.fixtures.ts
-import { expect } from "@playwright/test";
+import { test as base, expect } from "@playwright/test";
 import { LoginPage } from "../../page-objects/LoginPage";
-import { test as base } from "../shared/base.fixtures";
 
 const test = base.extend<{
   loginPage: LoginPage;

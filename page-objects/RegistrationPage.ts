@@ -39,6 +39,7 @@ export class RegistrationPage extends BasePage {
 
   // URLs
   readonly registrationURL: string;
+  public accountPageURL: string;
 
   constructor(page: Page) {
     super(page);
@@ -59,7 +60,8 @@ export class RegistrationPage extends BasePage {
     this.registerError = page.locator('[data-test="register-error"]');
 
     // URLs
-    this.registrationURL = `${process.env.BASE_URL}/auth/register`;
+    this.registrationURL = "https://practicesoftwaretesting.com/auth/register";
+    this.accountPageURL = "https://practicesoftwaretesting.com/account";
   }
 
   // Navigate to the registration page
@@ -117,7 +119,7 @@ export class RegistrationPage extends BasePage {
       const userData = generateUniqueUserData(); // Generate unique user data
       const testData = { ...userData, [fieldName]: value };
       await this.fillForm(testData); // F
-      
+
       await this.registerBtn.click();
 
       const errorLocator = this.page.locator(`[data-test="${errorDataTest}"]`);

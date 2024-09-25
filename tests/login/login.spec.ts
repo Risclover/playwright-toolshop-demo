@@ -80,10 +80,7 @@ test.describe("Login Page Tests", () => {
   });
 
   // Submitting the login form with a valid email does not result in error
-  test("Valid email format does not show error", async ({
-    loginPage,
-    exampleStrings,
-  }) => {
+  test("Valid email format does not show error", async ({ loginPage }) => {
     // Enter valid email
     await loginPage.enterEmail(exampleStrings.exampleEmail);
     // Click login button
@@ -108,10 +105,7 @@ test.describe("Login Page Tests", () => {
   });
 
   // Verify that password visibility (mask password/unmask password) works
-  test("Password visibility toggle works correctly", async ({
-    loginPage,
-    exampleStrings,
-  }) => {
+  test("Password visibility toggle works correctly", async ({ loginPage }) => {
     // Enter password
     await loginPage.enterPassword(exampleStrings.examplePassword);
 

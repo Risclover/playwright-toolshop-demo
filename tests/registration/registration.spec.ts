@@ -67,7 +67,7 @@ test.describe("Registration Page Tests", () => {
     await loginPage.login(userData.email, userData.password);
 
     // Verify redirection to user account page
-    await expect(loginPage.page).toHaveURL(`${process.env.BASE_URL}/account`);
+    await expect(loginPage.page).toHaveURL(registrationPage.accountPageURL);
 
     // Verify user name in navigation menu
     await expect(loginPage.navMenuBtn).toContainText(userData.firstName);

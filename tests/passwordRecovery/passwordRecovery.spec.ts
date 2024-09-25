@@ -1,5 +1,6 @@
 // tests/passwordRecovery.spec.ts
 import { test, expect } from "./passwordRecovery.fixtures";
+import { userData } from "../../test-data/loginData";
 
 test.describe("Password Recovery Tests", () => {
   // Password recovery form elements are rendered
@@ -24,7 +25,6 @@ test.describe("Password Recovery Tests", () => {
   // Form submits for email associated with an account
   test("Valid email in password reset form sends request successfully", async ({
     passwordRecoveryPage,
-    userData,
   }) => {
     const [request] = await Promise.all([
       passwordRecoveryPage.waitForForgotPasswordRequest(),
