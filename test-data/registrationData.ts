@@ -1,7 +1,19 @@
-import { UserData } from "../page-objects/RegistrationPage";
+export interface DefaultUserData {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  address: string;
+  postcode: string;
+  city: string;
+  state: string;
+  country: string;
+  phone: string;
+  email: string;
+  password: string;
+}
 
 // All info required to register for an account
-export const defaultUserData: UserData = {
+export const defaultUserData: DefaultUserData = {
   firstName: "John",
   lastName: "Doe",
   dateOfBirth: "1990-01-01",
@@ -16,7 +28,7 @@ export const defaultUserData: UserData = {
 };
 
 // Generate unique email (to allow for infinite testing)
-export function generateUniqueUserData(): UserData {
+export function generateUniqueUserData(): DefaultUserData {
   const timestamp = Date.now();
   return {
     ...defaultUserData,
@@ -68,7 +80,7 @@ export const errorMessages = {
 // Data for field validation testing
 export const fieldValidationTests = [
   {
-    field: "firstName" as keyof UserData,
+    field: "firstName" as keyof DefaultUserData,
     testCases: [
       {
         value: "a".repeat(41),
@@ -78,7 +90,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "lastName" as keyof UserData,
+    field: "lastName" as keyof DefaultUserData,
     testCases: [
       {
         value: "a".repeat(41),
@@ -88,7 +100,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "dateOfBirth" as keyof UserData,
+    field: "dateOfBirth" as keyof DefaultUserData,
     testCases: [
       {
         value: "2024-01-01",
@@ -102,7 +114,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "address" as keyof UserData,
+    field: "address" as keyof DefaultUserData,
     testCases: [
       {
         value: "a".repeat(71),
@@ -112,7 +124,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "postcode" as keyof UserData,
+    field: "postcode" as keyof DefaultUserData,
     testCases: [
       {
         value: "a".repeat(11),
@@ -122,7 +134,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "city" as keyof UserData,
+    field: "city" as keyof DefaultUserData,
     testCases: [
       {
         value: "a".repeat(41),
@@ -132,7 +144,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "state" as keyof UserData,
+    field: "state" as keyof DefaultUserData,
     testCases: [
       {
         value: "a".repeat(41),
@@ -142,7 +154,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "email" as keyof UserData,
+    field: "email" as keyof DefaultUserData,
     testCases: [
       {
         value: "customer@practicesoftwaretesting.com",
@@ -152,7 +164,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "password" as keyof UserData,
+    field: "password" as keyof DefaultUserData,
     testCases: [
       {
         value: "Aaaa1!",
@@ -174,7 +186,7 @@ export const fieldValidationTests = [
     errorDataTest: "register-error",
   },
   {
-    field: "phone" as keyof UserData,
+    field: "phone" as keyof DefaultUserData,
     testCases: [
       {
         value: "111-111-1111",

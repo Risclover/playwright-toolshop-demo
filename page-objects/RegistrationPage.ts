@@ -1,20 +1,7 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { BasePage } from "./BasePage";
 import { generateUniqueUserData } from "../test-data/registrationData";
-
-export interface UserData {
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  address: string;
-  postcode: string;
-  city: string;
-  state: string;
-  country: string;
-  phone: string;
-  email: string;
-  password: string;
-}
+import { DefaultUserData } from "../test-data/registrationData";
 
 export interface TestCase {
   value: string;
@@ -70,9 +57,9 @@ export class RegistrationPage extends BasePage {
   }
 
   // Fill in registration form fields
-  async fillForm(data: Partial<UserData>) {
+  async fillForm(data: Partial<DefaultUserData>) {
     for (const [key, value] of Object.entries(data)) {
-      const fieldLocator = this.getFieldLocator(key as keyof UserData);
+      const fieldLocator = this.getFieldLocator(key as keyof DefaultUserData);
 
       if (fieldLocator) {
         if (key === "country" && value) {
@@ -85,14 +72,14 @@ export class RegistrationPage extends BasePage {
   }
 
   // Submit the registration form
-  async submitForm(data: UserData) {
+  async submitForm(data: DefaultUserData) {
     await this.fillForm(data);
     await this.registerBtn.click();
   }
 
   // Get locator for a given field
-  getFieldLocator(fieldName: keyof UserData): Locator | undefined {
-    const fieldLocators: { [key in keyof UserData]: Locator } = {
+  getFieldLocator(fieldName: keyof DefaultUserData): Locator | undefined {
+    const fieldLocators: { [key in keyof DefaultUserData]: Locator } = {
       firstName: this.firstNameInput,
       lastName: this.lastNameInput,
       dateOfBirth: this.dateOfBirthInput,
@@ -110,7 +97,7 @@ export class RegistrationPage extends BasePage {
 
   // Test invalid values for a field
   async testInvalidValues(
-    fieldName: keyof UserData,
+    fieldName: keyof DefaultUserData,
     testCases: TestCase[],
     errorDataTest: string
   ) {

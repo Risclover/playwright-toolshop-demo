@@ -2,12 +2,12 @@ import { test as base } from "@playwright/test";
 import { RegistrationPage } from "../../page-objects/RegistrationPage";
 import { LoginPage } from "../../page-objects/LoginPage";
 import { generateUniqueUserData } from "../../test-data/registrationData";
-import { UserData } from "../../page-objects/RegistrationPage";
+import { DefaultUserData } from "../../test-data/registrationData";
 
 type TestFixtures = {
   registrationPage: RegistrationPage;
   loginPage: LoginPage;
-  userData: UserData;
+  defaultUserData: DefaultUserData;
 };
 
 export const test = base.extend<TestFixtures>({
@@ -22,7 +22,7 @@ export const test = base.extend<TestFixtures>({
     await use(loginPage);
   },
 
-  userData: async ({}, use) => {
+  defaultUserData: async ({}, use) => {
     const userData = generateUniqueUserData();
     await use(userData);
   },

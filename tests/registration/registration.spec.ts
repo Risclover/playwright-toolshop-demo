@@ -5,6 +5,7 @@ import {
 } from "../../test-data/registrationData";
 
 test.describe("Registration Page Tests", () => {
+  // Form elements are rendered
   test("Renders form elements correctly", async ({ registrationPage }) => {
     const inputs = [
       registrationPage.firstNameInput,
@@ -29,6 +30,7 @@ test.describe("Registration Page Tests", () => {
     await expect(registrationPage.registerBtn).toBeVisible();
   });
 
+  // Confirm that each form field gives 'required' error if blank upon form submission
   test("Validates required fields", async ({ registrationPage }) => {
     // Click the submit button without filling out the form
     await registrationPage.registerBtn.click();
@@ -44,7 +46,7 @@ test.describe("Registration Page Tests", () => {
     }
   });
 
-  // Loop through fieldValidationTests and verify proper field validation for each form field (based on given criteria within fieldValidationTests)
+  // Loop through field validation test data and verify proper field validation for each form field (based on given criteria from field validation test data)
   for (const { field, testCases, errorDataTest } of fieldValidationTests) {
     test(`Validates ${field} field`, async ({ registrationPage }) => {
       await registrationPage.testInvalidValues(field, testCases, errorDataTest);
@@ -55,23 +57,23 @@ test.describe("Registration Page Tests", () => {
   test("Successful registration and login", async ({
     registrationPage,
     loginPage,
-    userData,
+    defaultUserData,
   }) => {
     // Submit the registration form with given info from userData
-    await registrationPage.submitForm(userData);
+    await registrationPage.submitForm(defaultUserData);
 
     // Verify redirection to login page
     await expect(registrationPage.page).toHaveURL(loginPage.loginURL);
 
     // Log in with new user credentials
-    await loginPage.login(userData.email, userData.password);
+    await loginPage.login(defaultUserData.email, defaultUserData.password);
 
     // Verify redirection to user account page
     await expect(loginPage.page).toHaveURL(registrationPage.accountPageURL);
 
     // Verify user name in navigation menu
-    await expect(loginPage.navMenuBtn).toContainText(userData.firstName);
-    await expect(loginPage.navMenuBtn).toContainText(userData.lastName);
+    await expect(loginPage.navMenuBtn).toContainText(defaultUserData.firstName);
+    await expect(loginPage.navMenuBtn).toContainText(defaultUserData.lastName);
 
     // Log out user
     await loginPage.logout();
