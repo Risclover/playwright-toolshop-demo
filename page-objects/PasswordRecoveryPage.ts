@@ -43,7 +43,10 @@ export class PasswordRecoveryPage extends BasePage {
 
   // Fill out form and click submit
   async requestPasswordReset(email: string) {
+    // Enter email input with given email
     await this.enterEmail(email);
+
+    // Submit password reset request form
     await this.clickSubmitButton();
   }
 

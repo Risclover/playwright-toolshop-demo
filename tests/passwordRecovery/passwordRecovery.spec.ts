@@ -6,12 +6,22 @@ test.describe("Password Recovery Tests", () => {
   test("Password recovery page elements are displayed", async ({
     passwordRecoveryPage,
   }) => {
+    // Email field should be rendered
     await expect(passwordRecoveryPage.emailInput).toBeVisible();
+
+    // Submit button should be rendered
     await expect(passwordRecoveryPage.submitButton).toBeVisible();
+  });
+
+  // Email error element is not rendered upon initial page load
+  test("Email error element is not displayed", async ({
+    passwordRecoveryPage,
+  }) => {
+    // Email error element should not be rendered
     await expect(passwordRecoveryPage.emailError).not.toBeVisible();
   });
 
-  // 'Required' error appears when the user clicks the submit button while the email field is empty
+  // Email field's 'Required' error appears when the user clicks the submit button while the email field is empty
   test("Submitting without email shows required error", async ({
     passwordRecoveryPage,
   }) => {
@@ -21,7 +31,7 @@ test.describe("Password Recovery Tests", () => {
     );
   });
 
-  // Form submits for email associated with an account
+  // Form submits successfully when email field contains an email associated with an existing account
   test("Valid email in password reset form sends request successfully", async ({
     passwordRecoveryPage,
   }) => {
@@ -32,8 +42,12 @@ test.describe("Password Recovery Tests", () => {
 
     const response = await request.response();
     if (response) {
+      // Expect 200 status code
       expect(response.status()).toBe(200);
+
       const responseBody = await response.json();
+
+      // Expect response to be object containing `success: true`
       expect(responseBody).toEqual(
         expect.objectContaining({
           success: true,

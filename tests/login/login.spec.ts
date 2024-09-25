@@ -22,21 +22,25 @@ test.describe("Login Page Tests", () => {
 
   // Ensure all form elements are rendered
   test("Login form elements are rendered", async ({ loginPage }) => {
-    // Email input
+    // Email field
     await expect(loginPage.emailInput).toBeVisible();
-    // Password input
+
+    // Password field
     await expect(loginPage.passwordInput).toBeVisible();
+
     // Login button
     await expect(loginPage.loginButton).toBeVisible();
   });
 
   // Submitting the login form with an incorrect email/password combo results in error
   test("Invalid login shows error messages", async ({ loginPage }) => {
-    // Click the 'Login' button without filling out the form fields
+    // Click the 'Login' button (without filling out the form fields)
     await loginPage.clickLoginButton();
 
-    // Both email and password should be required, according to error messages
+    // Expect blank email submission to result in 'required' error
     await expect(loginPage.emailError).toHaveText("Email is required");
+
+    // Expect blank password submission to result in 'required' error
     await expect(loginPage.passwordError).toHaveText("Password is required");
   });
 
@@ -48,7 +52,7 @@ test.describe("Login Page Tests", () => {
     // Click login button
     await loginPage.clickLoginButton();
 
-    // Expect relevant error messagee
+    // Expect relevant password length error messagee
     await expect(loginPage.passwordError).toHaveText(
       "Password length is invalid"
     );
@@ -74,7 +78,7 @@ test.describe("Login Page Tests", () => {
     // Click login button
     await loginPage.clickLoginButton();
 
-    // Expect relevant error
+    // Expect relevant email format error
     await expect(loginPage.emailError).toHaveText("Email format is invalid");
   });
 
@@ -97,7 +101,7 @@ test.describe("Login Page Tests", () => {
     // Click link to go to registration page
     await loginPage.clickRegisterLink();
 
-    // Expect URL to match registration URL
+    // Expect URL to match registration page's URL
     await expect(page).toHaveURL(
       "https://practicesoftwaretesting.com/auth/register"
     );
@@ -105,22 +109,22 @@ test.describe("Login Page Tests", () => {
 
   // Verify that password visibility (mask password/unmask password) works
   test("Password visibility toggle works correctly", async ({ loginPage }) => {
-    // Enter password
+    // Enter example password into password field
     await loginPage.enterPassword(exampleStrings.examplePassword);
 
-    // Password field should have 'password' type (password is censored)
+    // Password field should have 'password' type (aka password is censored)
     await expect(loginPage.passwordInput).toHaveAttribute("type", "password");
 
     // Click password visibility toggle
     await loginPage.togglePasswordVisibility();
 
-    // Password field should have 'text' type (password is not censored)
+    // Password field should have 'text' type (aka password is not censored)
     await expect(loginPage.passwordInput).toHaveAttribute("type", "text");
 
     // Click password visibility toggle
     await loginPage.togglePasswordVisibility();
 
-    // Password field should be back to 'password' type (censored)
+    // Password field should be back to 'password' type (aka password is censored)
     await expect(loginPage.passwordInput).toHaveAttribute("type", "password");
   });
 
@@ -132,7 +136,7 @@ test.describe("Login Page Tests", () => {
     // Click 'forgot password' link
     await loginPage.clickForgotPasswordLink();
 
-    // Expect URL to match 'forgot password' URL
+    // Expect URL to match password recovery page's URL
     await expect(page).toHaveURL(
       "https://practicesoftwaretesting.com/auth/forgot-password"
     );
@@ -143,12 +147,14 @@ test.describe("Login Page Tests", () => {
     page,
     loginPage,
   }) => {
-    // Attempt login 4 times using a valid email and incorrect password
+    // Attempt login 4 times using a valid email and invalid password
     for (let i = 0; i < 5; i++) {
       await loginPage.login(userData.user1.email, "wrongpassword");
     }
 
+    // Wait for login error selector to appear in DOM
     await page.waitForSelector('[data-test="login-error"]');
+
     // Expect "account locked" error message
     await expect(loginPage.loginError).toHaveText(
       "Account locked, too many failed attempts. Please contact the administrator."

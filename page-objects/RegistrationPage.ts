@@ -31,7 +31,7 @@ export class RegistrationPage extends BasePage {
   constructor(page: Page) {
     super(page);
 
-    // Initialize locators using data-test attributes
+    // Initialize locators
     this.firstNameInput = page.locator('[data-test="first-name"]');
     this.lastNameInput = page.locator('[data-test="last-name"]');
     this.dateOfBirthInput = page.locator('[data-test="dob"]');
@@ -46,7 +46,7 @@ export class RegistrationPage extends BasePage {
     this.registerBtn = page.locator('[data-test="register-submit"]');
     this.registerError = page.locator('[data-test="register-error"]');
 
-    // URLs
+    // Initialize URLs
     this.registrationURL = "https://practicesoftwaretesting.com/auth/register";
     this.accountPageURL = "https://practicesoftwaretesting.com/account";
   }
@@ -61,11 +61,11 @@ export class RegistrationPage extends BasePage {
     for (const [key, value] of Object.entries(data)) {
       const fieldLocator = this.getFieldLocator(key as keyof DefaultUserData);
 
-      if (fieldLocator) {
-        if (key === "country" && value) {
-          await this.countryInput.selectOption(value as string);
-        } else {
-          await fieldLocator.fill(value || "");
+      if (fieldLocator) { // If field locator exists:
+        if (key === "country" && value) { // If field is "country" and `value` is defined:
+          await this.countryInput.selectOption(value as string); // Select country from dropdown
+        } else { // Otherwise:
+          await fieldLocator.fill(value || ""); // Input value into form field
         }
       }
     }
@@ -73,7 +73,10 @@ export class RegistrationPage extends BasePage {
 
   // Submit the registration form
   async submitForm(data: DefaultUserData) {
+    // Fill out registration form
     await this.fillForm(data);
+
+    // Submit registration form
     await this.registerBtn.click();
   }
 
@@ -105,11 +108,15 @@ export class RegistrationPage extends BasePage {
       await this.navigate(); // Ensure the form is reset by "refreshing" the page
       const userData = generateUniqueUserData(); // Generate unique user data
       const testData = { ...userData, [fieldName]: value };
-      await this.fillForm(testData); // F
+      await this.fillForm(testData); // Fill in form using test data
 
+      // Submit registration form
       await this.registerBtn.click();
 
+      // Retrieve error locator via given `errorDataTest` value
       const errorLocator = this.page.locator(`[data-test="${errorDataTest}"]`);
+
+      // Expect locator to contain given `message`
       await expect(errorLocator).toContainText(message);
     }
   }

@@ -28,10 +28,13 @@ test.describe("Products Page", () => {
     }) => {
       // Fetch products from first page
       const firstPageProducts = await productsPage.fetchProductsByPage(1);
+
       // Navigate to the next page
       await productsPage.clickNext();
+
       // Fetch products from the second page
       const secondPageProducts = await productsPage.fetchProductsByPage(2);
+
       // Ensure that the first product on the second page is different from the first product on the first page
       expect(secondPageProducts.data[0].id).not.toEqual(
         firstPageProducts.data[0].id
@@ -44,8 +47,10 @@ test.describe("Products Page", () => {
     }) => {
       // Click the 'Next' button
       await productsPage.clickNext();
+
       // Fetch the data for the current page
       const pageData = await productsPage.fetchCurrentPageData();
+
       // Ensure that the current page is page 2
       expect(pageData.current_page).toEqual(2);
     });
@@ -56,12 +61,17 @@ test.describe("Products Page", () => {
     }) => {
       // Navigate to the second page
       await productsPage.navigateToPage(2);
+
       // Fetch the data for the current page
       await productsPage.fetchCurrentPageData();
+
       // Click the 'Prev' button
       await productsPage.clickPrev();
-      // Fetch the current page data and ensure it is now the first page
+
+      // Fetch the current page's data
       const pageData = await productsPage.fetchCurrentPageData();
+
+      // Verify that the current page is 1 as expected
       expect(pageData.current_page).toEqual(1);
     });
 
@@ -71,7 +81,8 @@ test.describe("Products Page", () => {
     }) => {
       // Get the locator for the 'Prev' button
       const prevItem = productsPage.getPrevBtn();
-      // Ensure the 'Prev' button has the 'disabled' class
+
+      // Verify that the 'Prev' button has the 'disabled' class
       await expect(prevItem).toHaveClass(/disabled/);
     });
 
@@ -81,9 +92,11 @@ test.describe("Products Page", () => {
     }) => {
       // Navigate to the last page
       await productsPage.navigateToLastPage();
+
       // Get the locator for the 'Next' button
       const nextItem = productsPage.getNextBtn();
-      // Ensure the 'Next' button has the 'disabled' class
+
+      // Verify that the 'Next' button has the 'disabled' class
       await expect(nextItem).toHaveClass(/disabled/);
     });
   });
@@ -154,8 +167,6 @@ test.describe("Products Page", () => {
           product.category.name === productCategories.selectedCategory &&
           product.brand.name === productBrands.selectedBrand
       );
-
-      // Ensure all products in the response have the selected category and brand
       expect(allProductsMatchFilters).toBe(true);
 
       // Verify that the displayed product IDs match the filtered products (UI check)
@@ -164,28 +175,28 @@ test.describe("Products Page", () => {
         .evaluateAll((elements) =>
           elements.map((el) => el.getAttribute("data-test"))
         );
-
       const expectedProductIds = products.map(
         (product) => `product-${product.id}`
       );
-
       expect(displayedProductIds).toEqual(
         expect.arrayContaining(expectedProductIds)
       );
     });
 
+    // A 'no results' message appears when no products match the selected filter
     test("Displays a 'no results' message when no products match the filter", async ({
       productsPage,
     }) => {
       // Apply a category filter
       await productsPage.chooseCategory(productCategories.noResultsCategory);
 
-      // Expect a related error message
+      // Verify that a 'no results' message appears
       await expect(productsPage.noResults).toContainText(
         "There are no products found."
       );
     });
 
+    // Verify that selected filters don't change or disappear when user navigates product pages via pagination
     test("Filters persist when navigating between paginated pages", async ({
       productsPage,
     }) => {
@@ -208,7 +219,7 @@ test.describe("Products Page", () => {
       await productsPage.navigateToPage(2);
       await productsPage.waitForPageCategoryBrandResponse(2);
 
-      // Ensure that filters still apply
+      // Check that filters still apply
       products.forEach((product) => {
         const categoryName = product.category.name.toLowerCase();
         const brandName = product.brand.name.toLowerCase();
@@ -220,7 +231,7 @@ test.describe("Products Page", () => {
         const matchesBrand =
           brandName === productBrands.selectedBrand.toLowerCase();
 
-        // Ensure products match both category and brand
+        // Check that products' category and brand match the selected category and brand
         expect(matchesCategory && matchesBrand).toBe(true);
       });
     });
@@ -241,7 +252,7 @@ test.describe("Products Page", () => {
       const allProducts = allProductsResponse.data;
       const allProductsCount = allProducts.length;
 
-      // Ensure the total product count is greater than or equal to the filtered count
+      // Verify that the total product count is greater than or equal to the filtered count
       expect(allProductsCount).toBeGreaterThanOrEqual(filteredProductsCount);
     });
 

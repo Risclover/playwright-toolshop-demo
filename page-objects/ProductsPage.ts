@@ -45,19 +45,20 @@ export class ProductsPage extends BasePage {
     return response.json();
   }
 
-  // Navigate to specific product page
+  // Navigate to specific product page (by clicking pagination number)
   async navigateToPage(pageNumber: number) {
     await this.page.getByLabel(`Page-${pageNumber}`).click();
   }
 
-  // Navigate to last pagination page
+  // Navigate to last product page
   async navigateToLastPage() {
     const lastPageItem = this.page
       .locator(".pagination li")
       .filter({ hasNotText: "«" }) // Remove the "Prev" button from the list of possibilities
       .filter({ hasNotText: "»" }) // Remove the "Next" button from the list of possibilities
-      .last(); // Specifically select the last element
+      .last(); // Specifically select the last available button
 
+    // Click the last pagination button (outside of 'Next' and 'Prev')
     await lastPageItem.click();
   }
 

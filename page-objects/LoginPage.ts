@@ -55,7 +55,7 @@ export class LoginPage extends BasePage {
     await this.goto(this.loginURL);
   }
 
-  // Get current menu button element based on user's name
+  // Get current menu button element based on logged-in user's name
   getCurrentUserMenuBtn(firstName: string, lastName: string): Locator {
     return this.page.getByRole("button", { name: `${firstName} ${lastName}` });
   }
@@ -77,23 +77,32 @@ export class LoginPage extends BasePage {
 
   // Log into account using given email and password
   async login(email: string, password: string) {
+    // Enter given email
     await this.enterEmail(email);
+
+    // Enter given password
     await this.enterPassword(password);
+
+    // Submit login form
     await this.clickLoginButton();
   }
 
   // Log out of account
   async logout() {
+    // Click navigation menu button to open menu
     await this.navMenuBtn.click();
+
+    // Click sign out button
     await this.page.locator('[data-test="nav-sign-out"]').click();
   }
 
   // Toggle password visibility by clicking button
   async togglePasswordVisibility() {
+    // If password input field's type is 'text', then isPasswordVisible is true
     const isPasswordVisible =
       (await this.passwordInput.getAttribute("type")) === "text";
 
-    // Toggle password visibility (based on which button is active - mask/unmask password)
+    // Toggle password visibility (based on whether password input field's type is 'text' or not [otherwise would be type 'password'])
     if (isPasswordVisible) {
       await this.maskPasswordBtn.click();
     } else {

@@ -12,7 +12,7 @@ export interface DefaultUserData {
   password: string;
 }
 
-// All info required to register for an account
+// Example user info, for filling out registration form
 export const defaultUserData: DefaultUserData = {
   firstName: "John",
   lastName: "Doe",
@@ -29,7 +29,9 @@ export const defaultUserData: DefaultUserData = {
 
 // Generate unique email (to allow for infinite testing)
 export function generateUniqueUserData(): DefaultUserData {
-  const timestamp = Date.now();
+  const timestamp = Date.now(); // Use current timestamp to generate unique email
+
+  // Return object with defaultUserData's info, but replace email with our email generated from timestamp
   return {
     ...defaultUserData,
     email: `user${timestamp}@example.com`,
@@ -38,6 +40,7 @@ export function generateUniqueUserData(): DefaultUserData {
 
 // Error messages for form fields
 export const errorMessages = {
+  // Errors for each field when field is blank ('required' error messages)
   requiredFields: {
     "first-name-error": "First name is required",
     "last-name-error": "fields.last-name.required",
@@ -52,6 +55,7 @@ export const errorMessages = {
     "password-error": "Password is required",
   },
 
+  // Specific validation errors
   validationErrors: {
     firstNameTooLong:
       "The first name field must not be greater than 40 characters.",

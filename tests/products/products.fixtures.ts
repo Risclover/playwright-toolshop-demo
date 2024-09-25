@@ -8,7 +8,7 @@ type TestFixtures = {
 export const test = base.extend<TestFixtures>({
   // Create an instance of ProductsPage and navigate to the page before each test
   productsPage: async ({ page }, use) => {
-    // Create an instance of ProductsPage
+    // Create an instance of ProductsPage (product tests' POM)
     const productsPage = new ProductsPage(page);
 
     // Navigate to the homepage (which is also the storefront) before each test

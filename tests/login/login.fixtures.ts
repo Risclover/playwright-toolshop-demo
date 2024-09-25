@@ -5,7 +5,7 @@ const test = base.extend<{
   loginPage: LoginPage;
 }>({
   loginPage: async ({ page }, use) => {
-    // Create an instance of loginPage
+    // Create an instance of LoginPage (login tests' POM)
     const loginPage = new LoginPage(page);
 
     // Navigate to login page
