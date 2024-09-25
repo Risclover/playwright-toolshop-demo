@@ -6,11 +6,11 @@ jobs:
 
   create-envfile:
  
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
  
     steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1
+    - name: Create .env file
+      uses: SpicyPizza/create-envfile@v2.0.3
       with:
         envkey_BASE_URL: "https://practicesoftwaretesting.com"
         envkey_ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
