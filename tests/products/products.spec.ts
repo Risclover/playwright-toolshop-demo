@@ -240,20 +240,29 @@ test.describe("Products Page", () => {
     test("Unchecking the only active filter restores the full product list", async ({
       productsPage,
     }) => {
+      // Get the full product list before applying any filters
+      const initialResponse = await productsPage.fetchCurrentPageData();
+      const initialProducts = initialResponse.data;
+      const initialProductsCount = initialProducts.length;
+
       // Apply a category filter
       await productsPage.chooseCategory(productCategories.selectedCategory);
       const filteredResponse = await productsPage.waitForCategoryResponse();
       const filteredProducts = (await filteredResponse.json()).data;
       const filteredProductsCount = filteredProducts.length;
 
-      // Uncheck the category filter and verify that all products are displayed
-      await productsPage.chooseCategory(productCategories.selectedCategory);
-      const allProductsResponse = await productsPage.fetchCurrentPageData();
-      const allProducts = allProductsResponse.data;
-      const allProductsCount = allProducts.length;
+      // Verify that the product count decreased after filtering
+      expect(filteredProductsCount).toBeLessThan(initialProductsCount);
 
-      // Verify that the total product count is greater than or equal to the filtered count
-      expect(allProductsCount).toBeGreaterThanOrEqual(filteredProductsCount);
+      // Uncheck the category filter
+      await productsPage.chooseCategory(productCategories.selectedCategory);
+      const finalResponse = await productsPage.fetchCurrentPageData();
+      const finalProducts = finalResponse.data;
+      const finalProductsCount = finalProducts.length;
+
+      // Verify that the final product list matches the initial full product list
+      expect(finalProductsCount).toEqual(initialProductsCount);
+      expect(finalProducts).toEqual(initialProducts);
     });
 
     test("Unchecking a category filter while another is still checked displays the correct products", async ({
