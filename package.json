@@ -1,7 +1,7 @@
 {
   "name": "playwright-toolshop-demo",
   "version": "1.0.0",
-  "description": "Playwright test suite for login and password recovery",
+  "description": "Playwright test suite for login, password recovery, registration, and the products page",
   "scripts": {
     "test": "playwright test",
     "test:debug": "playwright test --debug",
