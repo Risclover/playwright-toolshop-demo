@@ -2,162 +2,152 @@ import { test, expect } from "./login.fixtures";
 import { exampleStrings, userData } from "../../test-data/loginData";
 
 test.describe("Login Page Tests", () => {
-  // Verify that user is able to login when submitting the form with correct credentials
   test("Logs in successfully with valid credentials", async ({ loginPage }) => {
-    // Log in with user2's email and password
+    // Log in using user2's email and password
     await loginPage.login(userData.user2.email, userData.user2.password);
 
-    // Identify menu button by user2's full name
+    // Identify the menu button via current user's full name
     const currentUserMenuBtn = loginPage.getCurrentUserMenuBtn(
       userData.user2.firstName,
       userData.user2.lastName
     );
 
-    // Expect user2's menu button to be visible
+    // Make sure the current user's menu button is visible
     await expect(currentUserMenuBtn).toBeVisible();
 
-    // Expect 'My Account' to be visible
+    // Verify that the 'My Account' heading is visible
     await expect(loginPage.myAccountHeading).toBeVisible();
   });
 
-  // Ensure all form elements are rendered
   test("Login form elements are rendered", async ({ loginPage }) => {
-    // Email field
+    // Check that each form element is rendered
     await expect(loginPage.emailInput).toBeVisible();
-
-    // Password field
     await expect(loginPage.passwordInput).toBeVisible();
-
-    // Login button
-    await expect(loginPage.loginButton).toBeVisible();
+    await expect(loginPage.loginBtn).toBeVisible();
   });
 
-  // Submitting the login form with an incorrect email/password combo results in error
   test("Invalid login shows error messages", async ({ loginPage }) => {
     // Click the 'Login' button (without filling out the form fields)
-    await loginPage.clickLoginButton();
+    await loginPage.clickloginBtn();
 
-    // Expect blank email submission to result in 'required' error
+    // Check that submission with a blank email field results in 'email required' error
     await expect(loginPage.emailError).toHaveText("Email is required");
 
-    // Expect blank password submission to result in 'required' error
+    // Check that submission with a blank password field results in 'password required' error
     await expect(loginPage.passwordError).toHaveText("Password is required");
   });
 
-  // Submitting the login form with a short password results in error
   test("Short password results in error", async ({ loginPage }) => {
-    // Enter short password
+    // Fill in password field with a short password
     await loginPage.enterPassword("aa");
 
-    // Click login button
-    await loginPage.clickLoginButton();
+    // Submit form
+    await loginPage.clickloginBtn();
 
-    // Expect relevant password length error messagee
+    // Check that password error appears and has correct text
+    await expect(loginPage.passwordError).toBeVisible();
     await expect(loginPage.passwordError).toHaveText(
       "Password length is invalid"
     );
   });
 
-  // Submitting the login form with a valid password does not result in error
   test("Valid password does not show error", async ({ loginPage }) => {
-    // Enter valid password
+    // Fill in password field with valid password
     await loginPage.enterPassword(exampleStrings.examplePassword);
 
-    // Click login button
-    await loginPage.clickLoginButton();
+    // Submit form
+    await loginPage.clickloginBtn();
 
-    // Expect error element not to be visible
+    // Check that password error is not visible
     await expect(loginPage.passwordError).not.toBeVisible();
   });
 
-  // Submitting the login form with an invalid email format results in error
   test("Invalid email format results in error", async ({ loginPage }) => {
-    // Enter email that is formatted incorrectly
+    // Fill in email field with an invalid email format
     await loginPage.enterEmail("aaa");
 
-    // Click login button
-    await loginPage.clickLoginButton();
+    // Submit form
+    await loginPage.clickloginBtn();
 
-    // Expect relevant email format error
+    // Check that email error appears and has correct text
+    await expect(loginPage.emailError).toBeVisible();
     await expect(loginPage.emailError).toHaveText("Email format is invalid");
   });
 
-  // Submitting the login form with a valid email does not result in error
   test("Valid email format does not show error", async ({ loginPage }) => {
-    // Enter valid email
+    // Fill in email field with valid email format
     await loginPage.enterEmail(exampleStrings.exampleEmail);
-    // Click login button
-    await loginPage.clickLoginButton();
 
-    // Expect error element not to be visible
+    // Submit form
+    await loginPage.clickloginBtn();
+
+    // Check that email error is not visible
     await expect(loginPage.emailError).not.toBeVisible();
   });
 
-  // Verify that the 'Register for new account' takes user to registration page
   test("Register link navigates to registration page", async ({
     page,
     loginPage,
+    registrationPage,
   }) => {
-    // Click link to go to registration page
+    // Navigate to registration page (from login page)
     await loginPage.clickRegisterLink();
 
-    // Expect URL to match registration page's URL
-    await expect(page).toHaveURL(
-      "https://practicesoftwaretesting.com/auth/register"
-    );
+    // Check that browser URL matches the registration page's URL
+    await expect(page).toHaveURL(registrationPage.registrationURL);
   });
 
-  // Verify that password visibility (mask password/unmask password) works
   test("Password visibility toggle works correctly", async ({ loginPage }) => {
-    // Enter example password into password field
+    // Fill in password field with example password
     await loginPage.enterPassword(exampleStrings.examplePassword);
 
-    // Password field should have 'password' type (aka password is censored)
+    // Check that the password input field has a type of 'password' (aka password is masked)
     await expect(loginPage.passwordInput).toHaveAttribute("type", "password");
 
-    // Click password visibility toggle
+    // Click password visibility toggle button
     await loginPage.togglePasswordVisibility();
 
-    // Password field should have 'text' type (aka password is not censored)
+    // Check that the password field now has a type of 'text' (aka password is unmasked)
     await expect(loginPage.passwordInput).toHaveAttribute("type", "text");
 
-    // Click password visibility toggle
+    // Click password visibility toggle button
     await loginPage.togglePasswordVisibility();
 
-    // Password field should be back to 'password' type (aka password is censored)
+    // Check that the password field has a type of 'password' again (aka password is masked)
     await expect(loginPage.passwordInput).toHaveAttribute("type", "password");
   });
 
-  // Verify that the 'Forgot password' link correctly navigates to password recovery
   test("Forgot password link navigates to reset page", async ({
     page,
     loginPage,
+    passwordRecoveryPage,
   }) => {
-    // Click 'forgot password' link
+    // Navigate to the password recovery page (from the login page)
     await loginPage.clickForgotPasswordLink();
 
-    // Expect URL to match password recovery page's URL
-    await expect(page).toHaveURL(
-      "https://practicesoftwaretesting.com/auth/forgot-password"
-    );
+    // Check that the browser's URL matches the password recovery page's URL
+    await expect(page).toHaveURL(passwordRecoveryPage.forgotPasswordURL);
   });
 
-  // Confirm that account locks after failed login attempts
   test("Account locks after multiple failed login attempts", async ({
     page,
     loginPage,
   }) => {
-    // Attempt login 4 times using a valid email and invalid password
-    for (let i = 0; i < 5; i++) {
+    // Attempt invalid login 4 times to trigger 'Account locked' message
+    for (let i = 0; i < 4; i++) {
+      // Attempt login with valid email and invalid password
       await loginPage.login(userData.user1.email, "wrongpassword");
+
+      // Allow website enough time to register each attempt
+      await page.waitForTimeout(1000);
     }
 
-    // Wait for login error selector to appear in DOM
-    await page.waitForSelector('[data-test="login-error"]');
-
-    // Expect "account locked" error message
+    // Check that 'Account locked' error message appears
     await expect(loginPage.loginError).toHaveText(
       "Account locked, too many failed attempts. Please contact the administrator."
     );
+
+    // Reset login attempts (so that future tests aren't affected)
+    await loginPage.resetUserLoginAttempts(userData.user1.email);
   });
 });

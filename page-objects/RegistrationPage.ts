@@ -47,8 +47,8 @@ export class RegistrationPage extends BasePage {
     this.registerError = page.locator('[data-test="register-error"]');
 
     // Initialize URLs
-    this.registrationURL = "https://practicesoftwaretesting.com/auth/register";
-    this.accountPageURL = "https://practicesoftwaretesting.com/account";
+    this.registrationURL = `${this.homepageURL}/auth/register`;
+    this.accountPageURL = `${this.homepageURL}/account`;
   }
 
   // Navigate to the registration page
@@ -61,10 +61,13 @@ export class RegistrationPage extends BasePage {
     for (const [key, value] of Object.entries(data)) {
       const fieldLocator = this.getFieldLocator(key as keyof DefaultUserData);
 
-      if (fieldLocator) { // If field locator exists:
-        if (key === "country" && value) { // If field is "country" and `value` is defined:
+      if (fieldLocator) {
+        // If field locator exists:
+        if (key === "country" && value) {
+          // If field is "country" and `value` is defined:
           await this.countryInput.selectOption(value as string); // Select country from dropdown
-        } else { // Otherwise:
+        } else {
+          // Otherwise:
           await fieldLocator.fill(value || ""); // Input value into form field
         }
       }

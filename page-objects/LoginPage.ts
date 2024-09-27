@@ -1,26 +1,35 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class LoginPage extends BasePage {
-  // Locators
+  // Input Locators
   public emailInput: Locator;
   public passwordInput: Locator;
-  public loginButton: Locator;
-  public emailError: Locator;
-  public passwordError: Locator;
+
+  // Link Locators
   public forgotPasswordLink: Locator;
   public registerLink: Locator;
+
+  // Button Locators
+  public loginBtn: Locator;
   public unmaskPasswordBtn: Locator;
   public maskPasswordBtn: Locator;
-  public myAccountHeading: Locator;
   public navMenuBtn: Locator;
   public usersPageBtn: Locator;
   public signOutBtn: Locator;
-  public loginError: Locator;
   public signInBtn: Locator;
+
+  // Error Locators
+  public loginError: Locator;
+  public emailError: Locator;
+  public passwordError: Locator;
+
+  // Misc. Locators
+  public myAccountHeading: Locator;
 
   // URLs
   public loginURL: string;
+  public forgotPasswordURL: string;
 
   constructor(page: Page) {
     super(page);
@@ -28,7 +37,7 @@ export class LoginPage extends BasePage {
     // Initialize locators
     this.emailInput = page.getByPlaceholder("Your email");
     this.passwordInput = page.getByPlaceholder("Your password");
-    this.loginButton = page.getByRole("button", { name: "Login" });
+    this.loginBtn = page.getByRole("button", { name: "Login" });
     this.emailError = page.locator("[data-test='email-error']");
     this.passwordError = page.locator("[data-test='password-error']");
     this.forgotPasswordLink = page.getByText("Forgot your Password?");
@@ -47,11 +56,11 @@ export class LoginPage extends BasePage {
     this.loginError = page.locator('[data-test="login-error"]');
 
     // Initialize URLs
-    this.loginURL = "https://practicesoftwaretesting.com/auth/login";
+    this.loginURL = `${this.homepageURL}/auth/login`;
   }
 
   // Navigate to login form
-  async navigateToLoginPage() {
+  async navigate() {
     await this.goto(this.loginURL);
   }
 
@@ -71,8 +80,8 @@ export class LoginPage extends BasePage {
   }
 
   // Click submit button
-  async clickLoginButton() {
-    await this.loginButton.click();
+  async clickloginBtn() {
+    await this.loginBtn.click();
   }
 
   // Log into account using given email and password
@@ -84,7 +93,7 @@ export class LoginPage extends BasePage {
     await this.enterPassword(password);
 
     // Submit login form
-    await this.clickLoginButton();
+    await this.clickloginBtn();
   }
 
   // Log out of account
@@ -118,5 +127,61 @@ export class LoginPage extends BasePage {
   // Navigate to registration page from login page
   async clickRegisterLink() {
     await this.registerLink.click();
+  }
+
+  async resetUserLoginAttempts(email: string) {
+    await this.login("admin@practicesoftwaretesting.com", "welcome01");
+
+    await this.navMenuBtn.click();
+
+    await this.usersPageBtn.click();
+
+    // Locate the user row containing the target email
+    const userRow = this.page.locator("table tbody tr").filter({
+      has: this.page.locator(`td:has-text("${email}")`),
+    });
+
+    await this.page.waitForSelector("table");
+    // Ensure the user row is found
+    const rowCount = await userRow.count();
+    if (rowCount === 0) {
+      throw new Error(`User with email ${email} not found.`);
+    }
+
+    // Find the 'Edit' button within that row
+    const editButton = userRow.locator("a", { hasText: "Edit" });
+
+    // Click the 'Edit' button and wait for the 'Failed login attempts' field to appear
+    await Promise.all([
+      this.page.waitForSelector('input[data-test="failed_login_attempts"]', {
+        state: "visible",
+      }),
+      editButton.click(),
+    ]);
+
+    // Set the 'Failed login attempts' field to 0
+    // Wait for the 'Failed login attempts' field to be attached to the DOM
+    await this.page.waitForTimeout(1000);
+
+    await this.page
+      .locator('[data-test="failed_login_attempts"]')
+      .waitFor({ state: "visible" });
+    await this.page
+      .locator("[data-test='failed_login_attempts']")
+      .scrollIntoViewIfNeeded();
+
+    await this.page.locator("[data-test='failed_login_attempts']").fill("0");
+
+    // Save the changes by clicking the 'Save' button and wait for the success message
+    await Promise.all([
+      this.page.waitForSelector(".alert-success", { state: "visible" }),
+      this.page.click('button[data-test="user-submit"]'),
+    ]);
+
+    // Confirm success
+    await expect(this.page.getByText("User saved!")).toBeVisible();
+
+    // Log out of admin account
+    await this.logout();
   }
 }

@@ -186,14 +186,9 @@ test.describe("Products Page", () => {
       expect(allProductsMatchFilters).toBe(true);
 
       // Verify that the displayed product IDs match the filtered products (UI check)
-      const displayedProductIds = await page
-        .locator(productsPage.productSelector)
-        .evaluateAll((elements) =>
-          elements.map((el) => el.getAttribute("data-test"))
-        );
-      const expectedProductIds = products.map(
-        (product) => `product-${product.id}`
-      );
+      const displayedProductIds = await productsPage.getDisplayedProducts();
+      const expectedProductIds = products.map((product) => product.id);
+
       expect(displayedProductIds).toEqual(
         expect.arrayContaining(expectedProductIds)
       );
@@ -299,9 +294,10 @@ test.describe("Products Page", () => {
       // Fetch the updated products after unchecking the first filter
       const updatedProducts = (await response.json()).data;
 
-      // Verify that the remaining products belong to the second category
       updatedProducts.forEach((product) => {
         const categoryName = product.category.name.toLowerCase();
+
+        // Verify that the remaining products belong to the second category
         expect(categoryName).toContain(
           productCategories.secondCategory.toLowerCase()
         );
@@ -344,7 +340,6 @@ test.describe("Products Page", () => {
 
     test("Selecting multiple brand filters displays products from all selected brands", async ({
       productsPage,
-      page,
     }) => {
       // Apply the first brand filter
       await productsPage.chooseBrand(productBrands.selectedBrand);

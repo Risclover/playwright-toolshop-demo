@@ -10,6 +10,9 @@ export class ProductsPage extends BasePage {
   // Selectors
   readonly productSelector: string;
 
+  // URLs
+  readonly homepageURL: string;
+
   constructor(page: Page) {
     super(page);
 
@@ -20,11 +23,14 @@ export class ProductsPage extends BasePage {
 
     // Selectors
     this.productSelector = 'a[data-test^="product-"]';
+
+    // URLs
+    this.homepageURL = "https://practicesoftwaretesting.com";
   }
 
   // Navigate to homepage of website
   async navigateToHomepage() {
-    await this.goto("https://practicesoftwaretesting.com");
+    await this.goto(this.homepageURL);
   }
 
   // Fetch product info (via JSON) by page
@@ -145,9 +151,11 @@ export class ProductsPage extends BasePage {
     for (const element of productElements) {
       // Get the value of the data-test attribute
       const dataTestAttribute = await element.getAttribute("data-test");
+
       if (dataTestAttribute) {
         // Extract the product ID from the data-test attribute
         const productId = dataTestAttribute.replace("product-", "");
+
         // Add the product ID to the array
         displayedProductIds.push(productId);
       }
