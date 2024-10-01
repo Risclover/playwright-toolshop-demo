@@ -26,7 +26,7 @@ export class RegistrationPage extends BasePage {
 
   // URLs
   readonly registrationURL: string;
-  public accountPageURL: string;
+  readonly accountPageURL: string;
 
   constructor(page: Page) {
     super(page);
@@ -61,14 +61,12 @@ export class RegistrationPage extends BasePage {
     for (const [key, value] of Object.entries(data)) {
       const fieldLocator = this.getFieldLocator(key as keyof DefaultUserData);
 
+      // General form field inputter (If field is 'country', then select `value` from country dropdown list. Otherwise, input `value` into form field).
       if (fieldLocator) {
-        // If field locator exists:
         if (key === "country" && value) {
-          // If field is "country" and `value` is defined:
-          await this.countryInput.selectOption(value as string); // Select country from dropdown
+          await this.countryInput.selectOption(value as string);
         } else {
-          // Otherwise:
-          await fieldLocator.fill(value || ""); // Input value into form field
+          await fieldLocator.fill(value || "");
         }
       }
     }
@@ -76,7 +74,7 @@ export class RegistrationPage extends BasePage {
 
   // Submit the registration form
   async submitForm(data: DefaultUserData) {
-    // Fill out registration form
+    // Fill out registration form with given data
     await this.fillForm(data);
 
     // Submit registration form
@@ -110,7 +108,7 @@ export class RegistrationPage extends BasePage {
     for (const { value, message } of testCases) {
       await this.navigate(); // Ensure the form is reset by "refreshing" the page
       const userData = generateUniqueUserData(); // Generate unique user data
-      const testData = { ...userData, [fieldName]: value };
+      const testData = { ...userData, [fieldName]: value }; 
       await this.fillForm(testData); // Fill in form using test data
 
       // Submit registration form

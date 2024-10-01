@@ -8,8 +8,8 @@ export class PasswordRecoveryPage extends BasePage {
   readonly emailError: Locator;
 
   // URLs
-  public readonly forgotPasswordURL: string;
-  private readonly forgotPasswordAPI: string;
+  readonly forgotPasswordURL: string;
+  readonly forgotPasswordAPI: string;
 
   constructor(page: Page) {
     super(page);
@@ -21,7 +21,7 @@ export class PasswordRecoveryPage extends BasePage {
 
     // URLs
     this.forgotPasswordURL = `${this.homepageURL}/auth/forgot-password`;
-    this.forgotPasswordAPI = `${this.homepageURL}/users/forgot-password`;
+    this.forgotPasswordAPI = `${this.apiURL}/users/forgot-password`;
   }
 
   // Navigate to password recovery page

@@ -3,33 +3,33 @@ import { BasePage } from "./BasePage";
 
 export class LoginPage extends BasePage {
   // Input Locators
-  public emailInput: Locator;
-  public passwordInput: Locator;
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
 
   // Link Locators
-  public forgotPasswordLink: Locator;
-  public registerLink: Locator;
+  readonly forgotPasswordLink: Locator;
+  readonly registerLink: Locator;
 
   // Button Locators
-  public loginBtn: Locator;
-  public unmaskPasswordBtn: Locator;
-  public maskPasswordBtn: Locator;
-  public navMenuBtn: Locator;
-  public usersPageBtn: Locator;
-  public signOutBtn: Locator;
-  public signInBtn: Locator;
+  readonly loginBtn: Locator;
+  readonly unmaskPasswordBtn: Locator;
+  readonly maskPasswordBtn: Locator;
+  readonly navMenuBtn: Locator;
+  readonly usersPageBtn: Locator;
+  readonly signOutBtn: Locator;
+  readonly signInBtn: Locator;
 
   // Error Locators
-  public loginError: Locator;
-  public emailError: Locator;
-  public passwordError: Locator;
+  readonly loginError: Locator;
+  readonly emailError: Locator;
+  readonly passwordError: Locator;
 
   // Misc. Locators
-  public myAccountHeading: Locator;
+  readonly myAccountHeading: Locator;
 
   // URLs
-  public loginURL: string;
-  public forgotPasswordURL: string;
+  readonly loginURL: string;
+  readonly forgotPasswordURL: string;
 
   constructor(page: Page) {
     super(page);
