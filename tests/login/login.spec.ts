@@ -1,8 +1,10 @@
 import { test, expect } from "./login.fixtures";
-import { exampleStrings, userData } from "../../test-data/loginData";
 
 test.describe("Login Page Tests", () => {
-  test("Logs in successfully with valid credentials", async ({ loginPage }) => {
+  test("Logs in successfully with valid credentials", async ({
+    loginPage,
+    userData,
+  }) => {
     // Log in using user2's email and password
     await loginPage.login(userData.user2.email, userData.user2.password);
 
@@ -51,7 +53,10 @@ test.describe("Login Page Tests", () => {
     );
   });
 
-  test("Valid password does not show error", async ({ loginPage }) => {
+  test("Valid password does not show error", async ({
+    loginPage,
+    exampleStrings,
+  }) => {
     // Fill in password field with valid password
     await loginPage.enterPassword(exampleStrings.examplePassword);
 
@@ -74,7 +79,10 @@ test.describe("Login Page Tests", () => {
     await expect(loginPage.emailError).toHaveText("Email format is invalid");
   });
 
-  test("Valid email format does not show error", async ({ loginPage }) => {
+  test("Valid email format does not show error", async ({
+    loginPage,
+    exampleStrings,
+  }) => {
     // Fill in email field with valid email format
     await loginPage.enterEmail(exampleStrings.exampleEmail);
 
@@ -97,7 +105,10 @@ test.describe("Login Page Tests", () => {
     await expect(page).toHaveURL(registrationPage.registrationURL);
   });
 
-  test("Password visibility toggle works correctly", async ({ loginPage }) => {
+  test("Password visibility toggle works correctly", async ({
+    loginPage,
+    exampleStrings,
+  }) => {
     // Fill in password field with example password
     await loginPage.enterPassword(exampleStrings.examplePassword);
 
@@ -132,6 +143,7 @@ test.describe("Login Page Tests", () => {
   test("Account locks after multiple failed login attempts", async ({
     page,
     loginPage,
+    userData,
   }) => {
     // Attempt invalid login 4 times to trigger 'Account locked' message
     for (let i = 0; i < 4; i++) {
