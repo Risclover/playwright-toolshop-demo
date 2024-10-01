@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import { userData } from "../test-data/loginData";
 
 export class LoginPage extends BasePage {
   // Inputs
@@ -129,19 +130,23 @@ export class LoginPage extends BasePage {
     await this.registerLink.click();
   }
 
+  // Reset user login attempts to allow infinite testing
   async resetUserLoginAttempts(email: string) {
-    await this.login("admin@practicesoftwaretesting.com", "welcome01");
+    // Login to admin account
+    await this.login(userData.admin.email, userData.admin.password);
 
+    // Open nav menu
     await this.navMenuBtn.click();
 
+    // Navigate to Users page
     await this.usersPageBtn.click();
 
-    // Locate the user row containing the target email
+    // Locate the correct user row containing the target email
     const userRow = this.page.locator("table tbody tr").filter({
       has: this.page.locator(`td:has-text("${email}")`),
     });
-
     await this.page.waitForSelector("table");
+
     // Ensure the user row is found
     const rowCount = await userRow.count();
     if (rowCount === 0) {
@@ -158,11 +163,7 @@ export class LoginPage extends BasePage {
       }),
       editButton.click(),
     ]);
-
-    // Set the 'Failed login attempts' field to 0
-    // Wait for the 'Failed login attempts' field to be attached to the DOM
     await this.page.waitForTimeout(1000);
-
     await this.page
       .locator('[data-test="failed_login_attempts"]')
       .waitFor({ state: "visible" });
@@ -170,9 +171,10 @@ export class LoginPage extends BasePage {
       .locator("[data-test='failed_login_attempts']")
       .scrollIntoViewIfNeeded();
 
+    // Replace login attempts with 0
     await this.page.locator("[data-test='failed_login_attempts']").fill("0");
 
-    // Save the changes by clicking the 'Save' button and wait for the success message
+    // Save the changes
     await Promise.all([
       this.page.waitForSelector(".alert-success", { state: "visible" }),
       this.page.click('button[data-test="user-submit"]'),
