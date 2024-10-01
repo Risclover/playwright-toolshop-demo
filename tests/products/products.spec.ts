@@ -1,5 +1,4 @@
 import { test, expect } from "./products.fixtures";
-import { productCategories, productBrands } from "../../test-data/productData";
 
 test.describe("Products Page", () => {
   test.describe("Pagination", () => {
@@ -121,6 +120,7 @@ test.describe("Products Page", () => {
     // Test to verify that filtering by category shows the correct results
     test("Filters products by category and displays the correct results", async ({
       productsPage,
+      productCategories,
     }) => {
       // Apply a category filter
       await productsPage.chooseCategory(productCategories.selectedCategory);
@@ -144,6 +144,7 @@ test.describe("Products Page", () => {
     // Test to verify that filtering by brand shows the correct results
     test("Filters products by brand and displays the correct results", async ({
       productsPage,
+      productBrands,
     }) => {
       // Apply a brand filter
       await productsPage.chooseBrand(productBrands.selectedBrand);
@@ -166,7 +167,8 @@ test.describe("Products Page", () => {
     // Verify that products can be filtered by both category and brand correctly
     test("Filters products by both category and brand and displays the correct results", async ({
       productsPage,
-      page,
+      productCategories,
+      productBrands,
     }) => {
       // Apply a category filter
       await productsPage.chooseCategory(productCategories.selectedCategory);
@@ -197,6 +199,7 @@ test.describe("Products Page", () => {
     // A 'no results' message appears when no products match the selected filter
     test("Displays a 'no results' message when no products match the filter", async ({
       productsPage,
+      productCategories,
     }) => {
       // Apply a category filter
       await productsPage.chooseCategory(productCategories.noResultsCategory);
@@ -210,6 +213,8 @@ test.describe("Products Page", () => {
     // Verify that selected filters don't change or disappear when user navigates product pages via pagination
     test("Filters persist when navigating between paginated pages", async ({
       productsPage,
+      productCategories,
+      productBrands,
     }) => {
       // Apply a category filter
       await productsPage.chooseCategory(productCategories.selectedCategory);
@@ -250,6 +255,7 @@ test.describe("Products Page", () => {
     // Test to verify that unchecking the only active filter restores the full product list
     test("Unchecking the only active filter restores the full product list", async ({
       productsPage,
+      productCategories,
     }) => {
       // Get the full product list before applying any filters
       const initialResponse = await productsPage.fetchCurrentPageData();
@@ -278,6 +284,7 @@ test.describe("Products Page", () => {
 
     test("Unchecking a category filter while another is still checked displays the correct products", async ({
       productsPage,
+      productCategories,
     }) => {
       // Apply the first category filter
       await productsPage.chooseCategory(productCategories.selectedCategory);
@@ -311,7 +318,7 @@ test.describe("Products Page", () => {
 
     test("Selecting multiple category filters displays products from all selected categories", async ({
       productsPage,
-      page,
+      productCategories,
     }) => {
       // Apply the first category filter
       await productsPage.chooseCategory(productCategories.selectedCategory);
@@ -340,6 +347,7 @@ test.describe("Products Page", () => {
 
     test("Selecting multiple brand filters displays products from all selected brands", async ({
       productsPage,
+      productBrands,
     }) => {
       // Apply the first brand filter
       await productsPage.chooseBrand(productBrands.selectedBrand);

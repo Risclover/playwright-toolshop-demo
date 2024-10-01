@@ -1,8 +1,16 @@
 import { test as base } from "@playwright/test";
 import { ProductsPage } from "../../page-objects/ProductsPage";
+import {
+  productCategories,
+  productBrands,
+  ProductCategories,
+  ProductBrands,
+} from "../../test-data/productData";
 
 type TestFixtures = {
   productsPage: ProductsPage;
+  productCategories: ProductCategories;
+  productBrands: ProductBrands;
 };
 
 export const test = base.extend<TestFixtures>({
@@ -15,6 +23,14 @@ export const test = base.extend<TestFixtures>({
     });
 
     await use(productsPage);
+  },
+
+  productCategories: async ({}, use) => {
+    await use(productCategories);
+  },
+
+  productBrands: async ({}, use) => {
+    await use(productBrands);
   },
 });
 

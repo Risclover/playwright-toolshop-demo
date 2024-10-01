@@ -1,3 +1,15 @@
+export interface ProductCategories {
+  selectedCategory: string;
+  secondCategory: string;
+  noResultsCategory: string;
+  multiplePagesCategory: string;
+}
+
+export interface ProductBrands {
+  selectedBrand: string;
+  secondBrand: string;
+}
+
 // Categories of products
 export const productCategories = {
   selectedCategory: "Hammer", // Selected category for filtering tests
