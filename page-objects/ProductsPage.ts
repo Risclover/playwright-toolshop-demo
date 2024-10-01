@@ -136,6 +136,7 @@ export class ProductsPage extends BasePage {
     return this.page.locator(".pagination li").filter({ hasText: "«" });
   }
 
+  // Get list of displayed products' IDs
   async getDisplayedProducts(): Promise<string[]> {
     // Wait for the product items to be visible on the page
     await this.page.waitForSelector(this.productSelector);
