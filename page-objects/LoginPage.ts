@@ -14,10 +14,6 @@ export class LoginPage extends BasePage {
   readonly loginBtn: Locator;
   readonly unmaskPasswordBtn: Locator;
   readonly maskPasswordBtn: Locator;
-  readonly navMenuBtn: Locator;
-  readonly usersPageBtn: Locator;
-  readonly signOutBtn: Locator;
-  readonly signInBtn: Locator;
 
   // Errors
   readonly loginError: Locator;
@@ -50,10 +46,6 @@ export class LoginPage extends BasePage {
     this.maskPasswordBtn = page.locator(
       'button:has(svg[data-icon="eye-slash"])'
     );
-    this.navMenuBtn = page.locator('[data-test="nav-menu"]');
-    this.usersPageBtn = page.locator('[data-test="nav-admin-users"]');
-    this.signInBtn = page.locator('[data-test="nav-sign-in"]');
-    this.signOutBtn = page.locator('[data-test="sign-out"]');
 
     // Errors
     this.emailError = page.locator("[data-test='email-error']");
