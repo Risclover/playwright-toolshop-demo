@@ -2,15 +2,15 @@ import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
 export class LoginPage extends BasePage {
-  // Input Locators
+  // Inputs
   readonly emailInput: Locator;
   readonly passwordInput: Locator;
 
-  // Link Locators
+  // Links
   readonly forgotPasswordLink: Locator;
   readonly registerLink: Locator;
 
-  // Button Locators
+  // Buttons
   readonly loginBtn: Locator;
   readonly unmaskPasswordBtn: Locator;
   readonly maskPasswordBtn: Locator;
@@ -19,12 +19,12 @@ export class LoginPage extends BasePage {
   readonly signOutBtn: Locator;
   readonly signInBtn: Locator;
 
-  // Error Locators
+  // Errors
   readonly loginError: Locator;
   readonly emailError: Locator;
   readonly passwordError: Locator;
 
-  // Misc. Locators
+  // Misc.
   readonly myAccountHeading: Locator;
 
   // URLs
@@ -34,28 +34,36 @@ export class LoginPage extends BasePage {
   constructor(page: Page) {
     super(page);
 
-    // Initialize locators
+    // Inputs
     this.emailInput = page.getByPlaceholder("Your email");
     this.passwordInput = page.getByPlaceholder("Your password");
-    this.loginBtn = page.getByRole("button", { name: "Login" });
-    this.emailError = page.locator("[data-test='email-error']");
-    this.passwordError = page.locator("[data-test='password-error']");
+
+    // Links
     this.forgotPasswordLink = page.getByText("Forgot your Password?");
     this.registerLink = page.getByRole("link", {
       name: "Register your account",
     });
+
+    // Buttons
+    this.loginBtn = page.getByRole("button", { name: "Login" });
     this.unmaskPasswordBtn = page.locator('button:has(svg[data-icon="eye"])');
     this.maskPasswordBtn = page.locator(
       'button:has(svg[data-icon="eye-slash"])'
     );
-    this.myAccountHeading = page.getByRole("heading", { name: "My account" });
     this.navMenuBtn = page.locator('[data-test="nav-menu"]');
     this.usersPageBtn = page.locator('[data-test="nav-admin-users"]');
     this.signInBtn = page.locator('[data-test="nav-sign-in"]');
     this.signOutBtn = page.locator('[data-test="sign-out"]');
+
+    // Errors
+    this.emailError = page.locator("[data-test='email-error']");
+    this.passwordError = page.locator("[data-test='password-error']");
     this.loginError = page.locator('[data-test="login-error"]');
 
-    // Initialize URLs
+    // Misc.
+    this.myAccountHeading = page.getByRole("heading", { name: "My account" });
+
+    // URLS
     this.loginURL = `${this.homepageURL}/auth/login`;
   }
 
