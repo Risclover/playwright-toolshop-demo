@@ -40,9 +40,9 @@ Welcome to **playwright-toolshop-demo**! This repository contains a suite of aut
 
 Before setting up the project, ensure you have the following installed on your machine:
 
-- **Node.js**: Version 14.x or higher. [Download Node.js]()
+- **Node.js**: Version 14.x or higher. [Download Node.js](https://nodejs.org/en/download/package-manager)
 - **npm**: Comes bundled with Node.js. Verify installation with `npm -v`.
-- **Git**: For cloning the repository. [Download Git]()
+- **Git**: For cloning the repository. [Download Git](https://github.com/git-guides/install-git)
 
 ## Installation
 
