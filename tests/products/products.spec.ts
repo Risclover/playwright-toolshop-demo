@@ -48,9 +48,6 @@ test.describe("Products Page", () => {
         productsPage.navigateToPage(2),
       ]);
 
-      // Log the response URL for debugging
-      console.log(`Navigated to page 2, received response: ${response.url()}`);
-
       await page.waitForLoadState("networkidle");
 
       // Get the product IDs displayed on the second page from the UI
