@@ -69,11 +69,13 @@ export class ProductsPage extends BasePage {
   }
 
   async waitForPageResponse(page: number) {
-    return this.page.waitForResponse(
-      (response) =>
-        response.url().includes(`page=${page}`) && response.status() === 200
-    );
+    return this.page.waitForResponse((response) => {
+      const url = response.url();
+      const matches = new URL(url).searchParams.get("page") === String(page);
+      return matches && response.status() === 200;
+    });
   }
+
   // Wait for response after selecting category
   async waitForCategoryResponse() {
     return this.page.waitForResponse(

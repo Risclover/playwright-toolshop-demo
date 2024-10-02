@@ -163,7 +163,7 @@ export class LoginPage extends BasePage {
       }),
       editButton.click(),
     ]);
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForTimeout(3000);
     await this.page
       .locator('[data-test="failed_login_attempts"]')
       .waitFor({ state: "visible" });
@@ -175,12 +175,11 @@ export class LoginPage extends BasePage {
     await this.page.locator("[data-test='failed_login_attempts']").fill("0");
 
     // Save the changes
-    await Promise.all([
-      this.page.waitForSelector(".alert-success", { state: "visible" }),
-      this.page.click('button[data-test="user-submit"]'),
-    ]);
+
+    this.page.click('button[data-test="user-submit"]');
 
     // Confirm success
+    this.page.waitForSelector(".alert-success", { state: "visible" });
     await expect(this.page.getByText("User saved!")).toBeVisible();
 
     // Log out of admin account

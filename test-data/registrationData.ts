@@ -38,8 +38,45 @@ export function generateUniqueUserData(): DefaultUserData {
   };
 }
 
+interface RequiredFields {
+  "first-name-error": string;
+  "last-name-error": string;
+  "dob-error": string;
+  "address-error": string;
+  "postcode-error": string;
+  "city-error": string;
+  "state-error": string;
+  "country-error": string;
+  "phone-error": string;
+  "email-error": string;
+  "password-error": string;
+}
+
+interface ValidationErrors {
+  firstNameTooLong: string;
+  lastNameTooLong: string;
+  userTooYoung: string;
+  userTooOld: string;
+  addressTooLong: string;
+  cityTooLong: string;
+  stateTooLong: string;
+  postcodeTooLong: string;
+  emailExists: string;
+  passwordTooShort: string;
+  passwordCaseRequirement: string;
+  passwordSymbolRequirement: string;
+  passwordNumberRequirement: string;
+  phoneNumbersOnly: string;
+  phoneTooLong: string;
+}
+
+export interface ErrorMessages {
+  requiredFields: RequiredFields;
+  validationErrors: ValidationErrors;
+}
+
 // Error messages for form fields
-export const errorMessages = {
+export const errorMessages: ErrorMessages = {
   // Errors for each field when field is blank ('required' error messages)
   requiredFields: {
     "first-name-error": "First name is required",

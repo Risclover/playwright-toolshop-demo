@@ -1,8 +1,5 @@
+import { fieldValidationTests } from "../../test-data/registrationData";
 import { test, expect } from "./registration.fixtures";
-import {
-  errorMessages,
-  fieldValidationTests,
-} from "../../test-data/registrationData";
 
 test.describe("Registration Page Tests", () => {
   // Form elements are rendered
@@ -31,7 +28,10 @@ test.describe("Registration Page Tests", () => {
   });
 
   // Confirm that each form field gives 'required' error if blank upon form submission
-  test("Validates required fields", async ({ registrationPage }) => {
+  test("Validates required fields", async ({
+    registrationPage,
+    errorMessages,
+  }) => {
     // Click the submit button without filling out the form
     await registrationPage.registerBtn.click();
 
@@ -46,7 +46,7 @@ test.describe("Registration Page Tests", () => {
     }
   });
 
-  // Loop through field validation test data and verify proper field validation for each form field (based on given criteria from field validation test data)
+  // // Loop through field validation test data and verify proper field validation for each form field (based on given criteria from field validation test data)
   for (const { field, testCases, errorDataTest } of fieldValidationTests) {
     test(`Validates ${field} field`, async ({ registrationPage }) => {
       await registrationPage.testInvalidValues(field, testCases, errorDataTest);

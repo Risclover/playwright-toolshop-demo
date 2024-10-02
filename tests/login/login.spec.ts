@@ -2,6 +2,7 @@ import { test, expect } from "./login.fixtures";
 
 test.describe("Login Page Tests", () => {
   test("Logs in successfully with valid credentials", async ({
+    page,
     loginPage,
     userData,
   }) => {
@@ -15,6 +16,9 @@ test.describe("Login Page Tests", () => {
     );
 
     // Make sure the current user's menu button is visible
+    await page.waitForSelector(".nav-link.dropdown-toggle", {
+      state: "visible",
+    });
     await expect(currentUserMenuBtn).toBeVisible();
 
     // Verify that the 'My Account' heading is visible

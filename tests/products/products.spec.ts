@@ -29,16 +29,29 @@ test.describe("Products Page", () => {
 
     // Test to ensure that different products are shown on different pages during pagination
     test("Displays different products on each page during pagination", async ({
+      page,
       productsPage,
     }) => {
-      await productsPage.waitForPageResponse(1);
+      // Ensure the initial page load is complete
+      await Promise.all([
+        productsPage.waitForPageResponse(1),
+        productsPage.navigateToHomepage(),
+      ]);
+
       // Get the product IDs displayed on the first page from the UI
       const firstPageDisplayedProductIds =
         await productsPage.getDisplayedProducts();
 
-      // Navigate to the next page (page 2)
-      await productsPage.navigateToPage(2);
-      await productsPage.waitForPageResponse(2);
+      // Navigate to the next page (page 2) and wait for the response simultaneously
+      const [response] = await Promise.all([
+        productsPage.waitForPageResponse(2),
+        productsPage.navigateToPage(2),
+      ]);
+
+      // Log the response URL for debugging
+      console.log(`Navigated to page 2, received response: ${response.url()}`);
+
+      await page.waitForLoadState("networkidle");
 
       // Get the product IDs displayed on the second page from the UI
       const secondPageDisplayedProductIds =
