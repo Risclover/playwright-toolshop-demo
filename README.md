@@ -1,5 +1,7 @@
 # playwright-toolshop-demo
 
+## Table of Contents
+
 - [Overview](#overview)
 - [Features](#features)
 - [Prerequisites](#prerequisites)
